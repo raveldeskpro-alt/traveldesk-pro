@@ -90,7 +90,9 @@ export function Combobox({
         type="button"
         disabled={disabled}
         onClick={handleToggle}
-        className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        className="w-full flex items-center justify-between px-3 py-2.5 rounded-[0.625rem] border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-start focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
         <span className={selected ? 'text-[#0F172A] dark:text-white truncate' : 'text-slate-400'}>
           {selected ? selected.label : placeholder}
@@ -114,18 +116,18 @@ export function Combobox({
 
       {open && (
         <div
-          className="absolute z-50 mt-1 w-full min-w-[220px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg overflow-hidden"
+          className="absolute z-50 mt-1 start-0 w-full min-w-[220px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-[0.625rem] shadow-surface overflow-hidden"
         >
           <div className="p-2 border-b border-slate-100 dark:border-slate-800">
             <div className="relative">
-              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
+              <Search className="absolute start-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
               <input
                 ref={searchInputRef}
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search..."
-                className="w-full pl-8 pr-3 py-1.5 text-sm border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 rounded-md focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand"
+                className="w-full ps-8 pe-3 py-1.5 text-sm border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 rounded-md focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand"
               />
             </div>
           </div>
@@ -138,7 +140,9 @@ export function Combobox({
                   key={option.value}
                   type="button"
                   onClick={() => handleSelect(option)}
-                  className={`w-full text-left px-3 py-2 text-sm transition-colors ${
+                  role="option"
+                  aria-selected={option.value === value}
+                  className={`w-full text-start px-3 py-2 text-sm transition-colors ${
                     option.value === value
                       ? 'bg-brand/10 text-brand font-medium'
                       : 'text-[#0F172A] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800'

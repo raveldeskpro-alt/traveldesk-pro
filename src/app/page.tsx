@@ -1,471 +1,121 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import DemoRequestForm from "@/components/marketing/DemoRequestForm";
 import {
-  ArrowRight,
-  BarChart3,
-  CalendarCheck,
-  Check,
-  ExternalLink,
-  FileText,
-  Globe2,
-  Mail,
-  MessageCircle,
-  Phone,
-  Plane,
-  ShieldCheck,
-  Sparkles,
-  Ticket,
-  Users,
+  ArrowRight, BarChart3, CalendarCheck, Check, ChevronDown, ChevronRight,
+  CircleDollarSign, Clock3, ExternalLink, FileText, Globe2, Mail, Menu,
+  MessageCircle, MoreHorizontal, Phone, Plane, Receipt, Search, ShieldCheck,
+  Ticket, TrendingUp, UserCheck, Users, X,
 } from "lucide-react";
 
-const features = [
-  {
-    icon: Users,
-    title: "Customer CRM",
-    description: "Keep passport details, contact history, preferences, and travel documents organized in one secure profile.",
-  },
-  {
-    icon: Ticket,
-    title: "Booking operations",
-    description: "Track flights, hotels, visas, tours, costs, sale price, and booking status without scattered spreadsheets.",
-  },
-  {
-    icon: FileText,
-    title: "Professional invoices",
-    description: "Create branded invoices, monitor pending payments, and share clean customer-ready documents.",
-  },
-  {
-    icon: BarChart3,
-    title: "Reports and profit visibility",
-    description: "Understand revenue, cost, profit, pending payments, and agency performance from a command center.",
-  },
-  {
-    icon: CalendarCheck,
-    title: "Calendar workflow",
-    description: "Stay ahead of departures, due dates, follow-ups, visa timelines, and important agency tasks.",
-  },
-  {
-    icon: Globe2,
-    title: "Arabic and English",
-    description: "Serve local teams with bilingual support designed for travel agencies in Oman.",
-  },
-];
-
 const pricing = [
-  {
-    name: "Starter",
-    price: "30 OMR",
-    description: "For small agencies getting organized.",
-    features: ["Core CRM", "Bookings", "Invoices", "Basic reports"],
-  },
-  {
-    name: "Professional",
-    price: "40 OMR",
-    description: "For growing agencies that need control.",
-    featured: true,
-    features: ["Everything in Starter", "Agents and commissions", "Advanced reports", "Arabic + English workspace"],
-  },
-  {
-    name: "Enterprise",
-    price: "150 OMR",
-    description: "For larger teams with advanced needs.",
-    features: ["Multi-branch setup", "Priority support", "Custom onboarding", "Admin controls"],
-  },
+  { name: "Starter", price: "30 OMR", description: "For small agencies getting organized.", features: ["Core CRM", "Bookings", "Invoices", "Basic reports"] },
+  { name: "Professional", price: "40 OMR", description: "For growing agencies that need control.", featured: true, features: ["Everything in Starter", "Agents and commissions", "Advanced reports", "Arabic + English workspace"] },
+  { name: "Enterprise", price: "150 OMR", description: "For larger teams with advanced needs.", features: ["Multi-branch setup", "Priority support", "Custom onboarding", "Admin controls"] },
 ];
 
 const faqs = [
-  {
-    question: "Is TravelDesk Pro built for Oman?",
-    answer: "Yes. The product is positioned for Omani travel agencies with OMR pricing, Arabic support, and agency workflows.",
-  },
-  {
-    question: "Can I try it before signing up?",
-    answer: "Yes. The interactive demo lets you explore the workspace without touching production data.",
-  },
-  {
-    question: "Does it replace spreadsheets?",
-    answer: "Yes. Customers, bookings, invoices, agents, and reports can live in one cloud workspace instead of separate files.",
-  },
+  { question: "Is TravelDesk Pro built for Oman?", answer: "Yes. The product is positioned for Omani travel agencies with OMR pricing, Arabic support, and agency workflows." },
+  { question: "Can I try it before signing up?", answer: "Yes. The interactive demo lets you explore the workspace without touching production data." },
+  { question: "Does it replace spreadsheets?", answer: "Yes. Customers, bookings, invoices, agents, and reports can live in one cloud workspace instead of separate files." },
 ];
 
 const whatsappHref = "https://api.whatsapp.com/send?phone=96875135022";
 
-export default function Home() {
+const modules = [
+  { icon: Users, label: "Customer CRM", copy: "Keep customer profiles, travel history, and important information organized." },
+  { icon: Ticket, label: "Bookings", copy: "Manage flights, hotels, visas, tours, costs, and booking status in one flow." },
+  { icon: FileText, label: "Invoices", copy: "Create professional customer-ready invoices and track payment status." },
+  { icon: UserCheck, label: "Agents & staff", copy: "Manage teams, roles, commissions, and agency performance visibility." },
+  { icon: BarChart3, label: "Reports", copy: "Understand revenue, costs, profit, commissions, and outstanding payments." },
+  { icon: CalendarCheck, label: "Calendar", copy: "Keep departures, deadlines, follow-ups, and agency tasks organized." },
+];
+
+function Logo({ light = false }: { light?: boolean }) {
   return (
-    <main className="min-h-screen overflow-hidden bg-[#F8FAFC] text-slate-950">
-      <section className="relative isolate">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(37,99,235,0.14),transparent_34%),radial-gradient(circle_at_80%_10%,rgba(249,115,22,0.12),transparent_28%),linear-gradient(180deg,#ffffff_0%,#f8fafc_70%)]" />
-        <div className="absolute inset-x-0 top-0 -z-10 h-[620px] opacity-[0.08] [background-image:linear-gradient(90deg,#2563eb_1px,transparent_1px),linear-gradient(0deg,#2563eb_1px,transparent_1px)] [background-size:72px_72px]" />
-        <div className="absolute right-0 top-24 -z-10 h-72 w-72 rounded-full border border-blue-200/80 bg-[conic-gradient(from_140deg,#dbeafe,#ffffff,#fed7aa,#dbeafe)] opacity-70 blur-sm" />
-        <div className="absolute left-1/2 top-0 -z-10 h-[520px] w-[920px] -translate-x-1/2 rounded-full bg-blue-500/10 blur-3xl" />
-
-        <header className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-3" aria-label="TravelDesk Pro home">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <img src="/images/icon traveldesk.png" alt="" className="h-7 w-7 object-contain" />
-            </span>
-            <span className="text-lg font-extrabold tracking-tight text-slate-950">
-              TravelDesk<span className="text-[#F97316]">Pro</span>
-            </span>
-          </Link>
-
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-slate-600 md:flex">
-            <a href="#features" className="hover:text-slate-950">Features</a>
-            <a href="#pricing" className="hover:text-slate-950">Pricing</a>
-            <a href="#faq" className="hover:text-slate-950">FAQ</a>
-            <Link href="/login" className="hover:text-slate-950">Login</Link>
-          </nav>
-
-          <Link
-            href="/demo"
-            className="hidden rounded-full bg-slate-950 px-5 py-2.5 text-sm font-bold text-white shadow-xl shadow-slate-900/10 transition hover:-translate-y-0.5 hover:bg-slate-800 sm:inline-flex"
-          >
-            Try Interactive Demo
-          </Link>
-        </header>
-
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 pb-20 pt-12 sm:px-6 lg:grid-cols-[1fr_0.92fr] lg:px-8 lg:pb-28 lg:pt-20">
-          <div>
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/80 px-4 py-2 text-sm font-semibold text-blue-700 shadow-sm">
-              <Sparkles className="h-4 w-4" />
-              The modern operating system for travel agencies in Oman
-            </div>
-            <h1 className="max-w-4xl text-5xl font-black tracking-[-0.04em] text-slate-950 sm:text-6xl lg:text-7xl">
-              The all-in-one platform for modern travel agencies
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
-              Manage customers, bookings, invoices, agents, and reports from one secure cloud workspace built for travel agencies in Oman.
-            </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/signup"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#2563EB] px-6 py-4 text-base font-bold text-white shadow-2xl shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-700"
-              >
-                Start Free Trial
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/demo"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-6 py-4 text-base font-bold text-slate-900 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50"
-              >
-                Try Interactive Demo
-              </Link>
-            </div>
-            <div className="mt-8 flex flex-wrap gap-4 text-sm font-medium text-slate-500">
-              <span className="inline-flex items-center gap-2"><Check className="h-4 w-4 text-emerald-500" /> No credit card required</span>
-              <span className="inline-flex items-center gap-2"><Check className="h-4 w-4 text-emerald-500" /> Interactive demo</span>
-              <span className="inline-flex items-center gap-2"><Check className="h-4 w-4 text-emerald-500" /> Built for Oman</span>
-            </div>
-          </div>
-
-          <div className="relative min-h-[620px] lg:[perspective:1400px]">
-            <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-blue-500/20 to-orange-500/10 blur-2xl" />
-            <div className="absolute right-2 top-0 hidden w-40 rotate-6 rounded-[1.6rem] border border-white/80 bg-white p-3 shadow-2xl shadow-slate-900/12 md:block">
-              <div className="h-24 rounded-2xl bg-[linear-gradient(135deg,#0ea5e9,#2563eb)] p-3 text-white">
-                <Plane className="h-5 w-5" />
-                <p className="mt-6 text-xs font-bold">Muscat</p>
-                <p className="text-[10px] text-blue-100">Daily departures</p>
-              </div>
-            </div>
-            <div className="absolute bottom-14 left-0 hidden w-44 -rotate-6 rounded-[1.6rem] border border-white/80 bg-white p-3 shadow-2xl shadow-orange-500/10 md:block">
-              <div className="h-24 rounded-2xl bg-[linear-gradient(135deg,#fb923c,#f97316)] p-3 text-white">
-                <Globe2 className="h-5 w-5" />
-                <p className="mt-6 text-xs font-bold">Salalah Tour</p>
-                <p className="text-[10px] text-orange-100">Group package</p>
-              </div>
-            </div>
-            <div className="relative mx-auto max-w-xl rotate-0 rounded-[2rem] border border-white/80 bg-white/90 p-3 shadow-2xl shadow-slate-900/12 backdrop-blur lg:rotate-[-2deg] lg:[transform-style:preserve-3d]">
-              <div className="rounded-[1.5rem] border border-slate-200 bg-slate-950 p-4 text-white shadow-inner">
-                <div className="mb-5 flex items-center justify-between">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-300">Command Center</p>
-                    <p className="mt-1 text-lg font-bold">Muscat Travel Agency</p>
-                  </div>
-                  <div className="rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-bold text-emerald-300">Live</div>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-3">
-                  {[
-                    ["Revenue", "12,480 OMR"],
-                    ["Bookings", "186"],
-                    ["Pending", "2,140 OMR"],
-                  ].map(([label, value]) => (
-                    <div key={label} className="rounded-2xl border border-white/10 bg-white/[0.06] p-4">
-                      <p className="text-xs text-slate-400">{label}</p>
-                      <p className="mt-2 text-lg font-extrabold">{value}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.06] p-4">
-                  <div className="mb-4 flex items-center justify-between">
-                    <p className="font-bold">Today&apos;s workflow</p>
-                    <Plane className="h-4 w-4 text-blue-300" />
-                  </div>
-                  {[
-                    ["Visa follow-up", "Al Khuwair family", "Due today"],
-                    ["Invoice sent", "Salalah group tour", "Pending"],
-                    ["Flight booking", "Dubai business trip", "Confirmed"],
-                  ].map(([title, customer, status]) => (
-                    <div key={title} className="flex items-center justify-between border-t border-white/10 py-3 first:border-t-0 first:pt-0 last:pb-0">
-                      <div>
-                        <p className="text-sm font-semibold">{title}</p>
-                        <p className="text-xs text-slate-400">{customer}</p>
-                      </div>
-                      <span className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-bold text-slate-200">{status}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-blue-400/20 bg-blue-400/10 p-4">
-                    <div className="mb-3 flex items-center justify-between">
-                      <p className="text-xs font-bold uppercase tracking-wider text-blue-200">Daily report</p>
-                      <span className="text-xs font-black text-emerald-300">+18%</span>
-                    </div>
-                    <div className="flex h-20 items-end gap-2">
-                      {[36, 52, 42, 68, 58, 78, 64].map((height, index) => (
-                        <span
-                          key={index}
-                          className="flex-1 rounded-t-lg bg-gradient-to-t from-blue-600 to-cyan-300"
-                          style={{ height: `${height}%` }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                  <div className="rounded-2xl border border-orange-400/20 bg-orange-400/10 p-4">
-                    <div className="mb-3 flex items-center justify-between">
-                      <p className="text-xs font-bold uppercase tracking-wider text-orange-200">Monthly report</p>
-                      <span className="text-xs font-black text-orange-200">40 OMR</span>
-                    </div>
-                    <div className="space-y-3">
-                      {[
-                        ["Bookings", "82%"],
-                        ["Invoices paid", "68%"],
-                        ["Agent target", "74%"],
-                      ].map(([label, width]) => (
-                        <div key={label}>
-                          <div className="mb-1 flex justify-between text-[11px] text-slate-300">
-                            <span>{label}</span>
-                            <span>{width}</span>
-                          </div>
-                          <div className="h-2 overflow-hidden rounded-full bg-white/10">
-                            <div className="h-full rounded-full bg-gradient-to-r from-orange-400 to-amber-200" style={{ width }} />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="absolute bottom-0 right-0 hidden w-64 rounded-[1.75rem] border border-white/80 bg-white/95 p-4 shadow-2xl shadow-slate-900/10 lg:block">
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-slate-400">Agency snapshot</p>
-              <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-                {[
-                  ["24", "Trips"],
-                  ["11", "Visa"],
-                  ["9", "Hotels"],
-                ].map(([value, label]) => (
-                  <div key={label} className="rounded-2xl bg-slate-50 p-3">
-                    <p className="text-lg font-black text-slate-950">{value}</p>
-                    <p className="text-[10px] font-bold text-slate-500">{label}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="features" className="mx-auto max-w-7xl px-5 py-20 sm:px-6 lg:px-8">
-        <div className="max-w-3xl">
-          <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#2563EB]">Features</p>
-          <h2 className="mt-3 text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
-            Everything your agency needs to operate with confidence.
-          </h2>
-          <p className="mt-4 text-lg leading-8 text-slate-600">
-            TravelDesk Pro brings daily operations, accounting visibility, and team workflows into one modern SaaS workspace.
-          </p>
-        </div>
-
-        <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => (
-            <div key={feature.title} className="group rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/5">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-[#2563EB] transition group-hover:bg-[#2563EB] group-hover:text-white">
-                <feature.icon className="h-5 w-5" />
-              </div>
-              <h3 className="mt-5 text-lg font-extrabold text-slate-950">{feature.title}</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">{feature.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="bg-slate-950 py-20 text-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-6 lg:grid-cols-[0.85fr_1fr] lg:px-8">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.24em] text-orange-300">Why agencies choose it</p>
-            <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">Built for real travel agency workflows.</h2>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {[
-              ["One workspace", "Replace disconnected files with a shared cloud system."],
-              ["Secure operations", "Keep agency data protected behind authenticated workspaces."],
-              ["Faster invoicing", "Create, track, and share customer-ready invoices quickly."],
-              ["Better decisions", "See profit, pending payments, and team performance clearly."],
-            ].map(([title, description]) => (
-              <div key={title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.06] p-5">
-                <ShieldCheck className="mb-4 h-5 w-5 text-blue-300" />
-                <h3 className="font-extrabold">{title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-300">{description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="pricing" className="mx-auto max-w-7xl px-5 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#2563EB]">Pricing</p>
-          <h2 className="mt-3 text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">Simple plans for growing agencies.</h2>
-          <p className="mt-4 text-lg text-slate-600">Start small, then upgrade as your team and booking volume grow.</p>
-        </div>
-
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
-          {pricing.map((plan) => (
-            <div
-              key={plan.name}
-              className={`relative rounded-[2rem] border p-7 shadow-sm ${
-                plan.featured
-                  ? "border-[#2563EB] bg-slate-950 text-white shadow-2xl shadow-blue-600/20"
-                  : "border-slate-200 bg-white text-slate-950"
-              }`}
-            >
-              {plan.featured && (
-                <div className="absolute right-6 top-6 rounded-full bg-[#F97316] px-3 py-1 text-xs font-black uppercase tracking-wider text-white">
-                  Recommended
-                </div>
-              )}
-              <h3 className="text-xl font-extrabold">{plan.name}</h3>
-              <p className={`mt-2 text-sm ${plan.featured ? "text-slate-300" : "text-slate-600"}`}>{plan.description}</p>
-              <p className="mt-6 text-4xl font-black">
-                {plan.price}
-                <span className={`text-sm font-semibold ${plan.featured ? "text-slate-400" : "text-slate-500"}`}> / month</span>
-              </p>
-              <ul className="mt-7 space-y-3">
-                {plan.features.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm font-medium">
-                    <Check className={`mt-0.5 h-4 w-4 ${plan.featured ? "text-emerald-300" : "text-emerald-500"}`} />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/signup"
-                className={`mt-8 inline-flex w-full items-center justify-center rounded-2xl px-5 py-3.5 text-sm font-bold transition ${
-                  plan.featured
-                    ? "bg-white text-slate-950 hover:bg-slate-100"
-                    : "bg-[#2563EB] text-white hover:bg-blue-700"
-                }`}
-              >
-                Start Free Trial
-              </Link>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section id="faq" className="mx-auto max-w-4xl px-5 pb-20 sm:px-6 lg:px-8">
-        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <h2 className="text-3xl font-black tracking-tight text-slate-950">FAQ</h2>
-          <div className="mt-6 divide-y divide-slate-200">
-            {faqs.map((faq) => (
-              <div key={faq.question} className="py-5">
-                <h3 className="font-extrabold text-slate-950">{faq.question}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="px-5 pb-10 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-[2rem] bg-[#2563EB] px-6 py-10 text-center text-white shadow-2xl shadow-blue-600/20">
-          <h2 className="text-3xl font-black tracking-tight sm:text-4xl">Ready to modernize your travel agency?</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-blue-100">Launch a secure cloud workspace for bookings, customers, invoices, agents, and reports.</p>
-          <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link href="/signup" className="rounded-2xl bg-white px-6 py-3.5 text-sm font-bold text-slate-950 transition hover:bg-blue-50">
-              Start Free Trial
-            </Link>
-            <Link href="/demo" className="rounded-2xl border border-white/30 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-white/10">
-              Try Interactive Demo
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <footer id="contact" className="relative overflow-hidden bg-slate-950 px-5 py-14 text-white sm:px-6 lg:px-8">
-        <div className="absolute inset-0 opacity-20 [background-image:radial-gradient(circle_at_20%_20%,#2563eb,transparent_28%),radial-gradient(circle_at_80%_0%,#f97316,transparent_24%)]" />
-        <div className="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_0.9fr]">
-          <div>
-            <Link href="/" className="inline-flex items-center gap-3" aria-label="TravelDesk Pro home">
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white shadow-sm">
-                <img src="/images/icon traveldesk.png" alt="" className="h-8 w-8 object-contain" />
-              </span>
-              <span className="text-xl font-black tracking-tight">
-                TravelDesk<span className="text-[#F97316]">Pro</span>
-              </span>
-            </Link>
-            <p className="mt-5 max-w-xl text-lg leading-8 text-slate-300">
-              The modern operating system for travel agencies in Oman, built for bookings, customers, invoices, agents, and reporting.
-            </p>
-
-            <div className="mt-8 grid gap-3 sm:grid-cols-2">
-              <a href="mailto:admin@traveldeskpro.app" className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.05] p-4 text-sm font-semibold text-slate-200 transition hover:bg-white/[0.08]">
-                <Mail className="h-5 w-5 text-blue-300" />
-                admin@traveldeskpro.app
-              </a>
-              <a href="tel:+96875135022" className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.05] p-4 text-sm font-semibold text-slate-200 transition hover:bg-white/[0.08]">
-                <Phone className="h-5 w-5 text-blue-300" />
-                +968-75135022
-              </a>
-              <a href={whatsappHref} target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-4 text-sm font-semibold text-emerald-100 transition hover:bg-emerald-400/15">
-                <MessageCircle className="h-5 w-5 text-emerald-300" />
-                WhatsApp +968-75135022
-              </a>
-              <a href="https://www.traveldeskpro.app" target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.05] p-4 text-sm font-semibold text-slate-200 transition hover:bg-white/[0.08]">
-                <ExternalLink className="h-5 w-5 text-blue-300" />
-                www.traveldeskpro.app
-              </a>
-            </div>
-
-            <div className="mt-8 flex flex-wrap gap-5 text-sm font-semibold text-slate-400">
-              <a href="#features" className="hover:text-white">Features</a>
-              <a href="#pricing" className="hover:text-white">Pricing</a>
-              <a href="#faq" className="hover:text-white">FAQ</a>
-              <Link href="/login" className="hover:text-white">Login</Link>
-              <Link href="/demo" className="hover:text-white">Interactive demo</Link>
-            </div>
-          </div>
-
-          <div className="lg:justify-self-end">
-            <DemoRequestForm />
-          </div>
-        </div>
-        <div className="relative mx-auto mt-10 flex max-w-7xl flex-col gap-4 border-t border-white/10 pt-6 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} TravelDesk Pro. All rights reserved.</p>
-          <a
-            href={whatsappHref}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-3 font-black text-slate-950 shadow-xl shadow-emerald-500/20 transition hover:-translate-y-0.5 hover:bg-emerald-400"
-          >
-            <MessageCircle className="h-5 w-5" />
-            WhatsApp us
-          </a>
-        </div>
-      </footer>
-    </main>
+    <Link href="/" className="inline-flex items-center gap-3" aria-label="TravelDesk Pro home">
+      <span className={`flex h-10 w-10 items-center justify-center rounded-md border ${light ? "border-white/10 bg-white" : "border-slate-200 bg-white"}`}>
+        <img src="/images/icon traveldesk.png" alt="" className="h-6 w-6 object-contain" />
+      </span>
+      <span className={`text-lg font-bold tracking-tight ${light ? "text-white" : "text-slate-950"}`}>
+        TravelDesk<span className="text-[#F97316]">Pro</span>
+      </span>
+    </Link>
   );
 }
+
+function BrowserFrame({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`overflow-hidden rounded-xl border border-slate-300 bg-white shadow-[0_24px_70px_rgba(15,23,42,0.14)] ${className}`}>
+      <div className="flex h-10 items-center gap-2 border-b border-slate-200 bg-slate-50 px-4">
+        <span className="h-2.5 w-2.5 rounded-full bg-slate-300" /><span className="h-2.5 w-2.5 rounded-full bg-slate-300" /><span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
+        <div className="mx-auto hidden h-5 w-48 rounded border border-slate-200 bg-white sm:block" />
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function MiniSidebar() {
+  return <aside className="hidden w-36 shrink-0 border-r border-slate-200 bg-slate-950 p-3 text-white sm:block"><div className="mb-6 flex items-center gap-2 text-[9px] font-bold"><span className="flex h-5 w-5 items-center justify-center rounded bg-blue-600"><Plane className="h-3 w-3" /></span> TravelDesk</div><div className="space-y-1 text-[9px] text-slate-400">{["Command center", "Bookings", "Customers", "Invoices", "Reports"].map((item, index) => <div key={item} className={`rounded px-2 py-2 ${index === 0 ? "bg-blue-600/20 text-blue-200" : ""}`}>{item}</div>)}</div></aside>;
+}
+
+function DashboardPreview() {
+  return <BrowserFrame><div className="flex min-h-[410px] bg-[#f4f6f8]"><MiniSidebar /><div className="min-w-0 flex-1 p-4 sm:p-6"><div className="flex items-start justify-between gap-3"><div><p className="text-[9px] font-bold uppercase tracking-[0.18em] text-blue-600">Command center</p><h3 className="mt-1 text-lg font-bold text-slate-900">Good morning, Aisha</h3><p className="text-[10px] text-slate-500">Preview data for a fictional agency</p></div><div className="hidden rounded border border-slate-200 bg-white px-2 py-1 text-[9px] text-slate-500 sm:block">This month⌄</div></div><div className="mt-5 grid grid-cols-2 gap-2 lg:grid-cols-4">{[["Revenue", "12,480 OMR", CircleDollarSign, "text-blue-600"], ["Bookings", "186", Ticket, "text-orange-500"], ["Outstanding", "2,140 OMR", Clock3, "text-amber-600"], ["Customers", "328", Users, "text-emerald-600"]].map(([label, value, Icon, color]) => { const MetricIcon = Icon as typeof CircleDollarSign; return <div key={label as string} className="rounded-md border border-slate-200 bg-white p-3"><MetricIcon className={`h-4 w-4 ${color}`} /><p className="mt-3 text-[9px] text-slate-500">{label as string}</p><p className="mt-1 text-sm font-bold text-slate-900">{value as string}</p></div>; })}</div><div className="mt-3 grid gap-3 lg:grid-cols-[1.4fr_0.9fr]"><div className="rounded-md border border-slate-200 bg-white p-4"><div className="flex justify-between"><p className="text-xs font-semibold text-slate-900">Revenue overview</p><TrendingUp className="h-4 w-4 text-emerald-600" /></div><div className="mt-6 flex h-28 items-end gap-2 border-b border-l border-slate-200 px-3 pb-0">{[34, 48, 42, 65, 54, 78, 68, 88, 76, 94].map((height, index) => <span key={index} className="flex-1 rounded-t-sm bg-blue-500/80" style={{ height: `${height}%` }} />)}</div><div className="mt-2 flex justify-between text-[9px] text-slate-400"><span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span></div></div><div className="rounded-md border border-slate-200 bg-white p-4"><p className="text-xs font-semibold text-slate-900">Upcoming departures</p><div className="mt-3 space-y-3">{[["MCT → DXB", "Today · 14:20"], ["MCT → LHR", "Tomorrow · 08:00"], ["Salalah tour", "18 Sep · 09:30"]].map(([route, date]) => <div key={route} className="flex items-center gap-2 border-t border-slate-100 pt-2 first:border-0 first:pt-0"><span className="flex h-6 w-6 items-center justify-center rounded bg-blue-50 text-blue-600"><Plane className="h-3 w-3" /></span><div><p className="text-[10px] font-semibold text-slate-800">{route}</p><p className="text-[9px] text-slate-500">{date}</p></div></div>)}</div></div></div><div className="mt-3 rounded-md border border-slate-200 bg-white p-4"><div className="flex justify-between"><p className="text-xs font-semibold text-slate-900">Recent bookings</p><span className="text-[9px] font-semibold text-blue-600">View all</span></div><div className="mt-3 grid grid-cols-3 gap-2 text-[9px] text-slate-500"><span>Customer</span><span>Service</span><span>Status</span>{[["Mariam Al Harthy", "Flight · DXB", "Confirmed"], ["Khalid Trading", "Hotel · Salalah", "Pending"]].map(([customer, service, status]) => <div key={customer} className="col-span-3 grid grid-cols-3 border-t border-slate-100 py-2 text-[10px]"><span className="font-medium text-slate-800">{customer}</span><span>{service}</span><span className="text-emerald-600">{status}</span></div>)}</div></div></div></div></BrowserFrame>;
++}
++
++function InvoicePreview() {
++  return <div className="mx-auto max-w-md border border-slate-200 bg-white p-5 shadow-[0_18px_45px_rgba(15,23,42,0.12)] sm:p-8"><div className="flex justify-between border-b border-slate-200 pb-5"><div><div className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded bg-blue-600"><Plane className="h-4 w-4 text-white" /></span><span className="text-sm font-bold text-slate-900">Muscat Horizons</span></div><p className="mt-2 text-[9px] leading-4 text-slate-500">Al Khuwair, Muscat, Oman<br />+968 9000 0000 · accounts@agency.om</p></div><div className="text-right"><p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">Invoice</p><p className="mt-1 text-sm font-bold text-slate-900">INV-0048</p><p className="mt-2 text-[9px] text-slate-500">Issued 06 Sep 2026<br />Due 06 Oct 2026</p></div></div><div className="py-5"><p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">Bill to</p><p className="mt-1 text-xs font-bold text-slate-900">Mariam Al Harthy</p><p className="text-[9px] text-slate-500">+968 9123 4567 · Oman</p></div><div className="overflow-hidden border border-slate-200"><div className="grid grid-cols-[1fr_45px_70px] bg-slate-50 p-2 text-[8px] font-bold uppercase text-slate-500"><span>Description</span><span>Qty</span><span className="text-right">Total</span></div>{[["Flight ticket · MCT-DXB", "2", "OMR 420.00"], ["Service fee", "1", "OMR 15.00"]].map(([item, qty, total]) => <div key={item} className="grid grid-cols-[1fr_45px_70px] border-t border-slate-100 p-2 text-[9px] text-slate-700"><span>{item}</span><span>{qty}</span><span className="text-right">{total}</span></div>)}</div><div className="ml-auto mt-5 w-44 space-y-2 text-[10px]"><div className="flex justify-between text-slate-500"><span>Subtotal</span><span>OMR 435.00</span></div><div className="flex justify-between text-slate-500"><span>VAT 5%</span><span>OMR 21.75</span></div><div className="flex justify-between border-t border-slate-200 pt-2 text-sm font-bold text-slate-900"><span>Total</span><span>OMR 456.75</span></div></div><div className="mt-7 flex items-center justify-between border-t border-slate-200 pt-4"><span className="rounded bg-amber-50 px-2 py-1 text-[9px] font-bold text-amber-700">PENDING PAYMENT</span><span className="text-[9px] text-slate-400">PDF · PRINT · WHATSAPP</span></div></div>;
++}
++
++function CalendarPreview() {
++  const days = ["29", "30", "31", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "1", "2"];
++  return <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-[0_18px_45px_rgba(15,23,42,0.1)]"><div className="flex items-center justify-between"><div><p className="text-[9px] font-bold uppercase tracking-wider text-blue-600">Agency calendar</p><h3 className="mt-1 text-base font-bold text-slate-900">September 2026</h3></div><div className="flex gap-1"><span className="rounded border border-slate-200 px-2 py-1 text-[9px] text-slate-500">Today</span><span className="rounded bg-slate-900 px-2 py-1 text-[9px] text-white">Month</span></div></div><div className="mt-5 grid grid-cols-7 gap-1 text-center text-[8px] font-bold uppercase text-slate-400">{["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => <span key={day}>{day}</span>)}{days.map((day, index) => <div key={`${day}-${index}`} className={`relative min-h-12 rounded border p-1 text-left text-[9px] ${day === "6" ? "border-blue-500 bg-blue-50 text-blue-700" : "border-slate-100 text-slate-600"}`}><span>{day}</span>{[3, 9, 17, 24].includes(index) && <span className="mt-1 block truncate rounded bg-blue-100 px-1 text-[7px] text-blue-700">Departure</span>}{[12, 28].includes(index) && <span className="mt-1 block truncate rounded bg-amber-100 px-1 text-[7px] text-amber-700">Reminder</span>}</div>)}</div></div>;
++}
++
++export default function Home() {
++  const [mobileOpen, setMobileOpen] = useState(false);
++  const [openFaq, setOpenFaq] = useState<number | null>(0);
++
++  return <main className="min-h-screen overflow-x-hidden bg-[#f7f8fa] text-slate-950">
++    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-[#f7f8fa]/95 backdrop-blur"><div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8"><Logo /><nav className="hidden items-center gap-7 text-sm font-semibold text-slate-600 md:flex"><a href="#features" className="transition hover:text-slate-950">Features</a><a href="#solutions" className="transition hover:text-slate-950">Solutions</a><a href="#pricing" className="transition hover:text-slate-950">Pricing</a><a href="#faq" className="transition hover:text-slate-950">FAQ</a><Link href="/login" className="ms-3 transition hover:text-slate-950">Login</Link><Link href="/demo" className="rounded-md bg-slate-950 px-4 py-2.5 text-white transition hover:bg-blue-700">Try Interactive Demo</Link><Link href="/signup" className="rounded-md bg-blue-600 px-4 py-2.5 text-white shadow-sm transition hover:bg-blue-700">Start Free Trial</Link></nav><button type="button" aria-label={mobileOpen ? "Close menu" : "Open menu"} onClick={() => setMobileOpen(!mobileOpen)} className="rounded-md p-2 text-slate-700 hover:bg-white md:hidden">{mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button></div>{mobileOpen && <nav className="border-t border-slate-200 bg-white px-5 py-4 md:hidden"><div className="mx-auto flex max-w-7xl flex-col gap-1 text-sm font-semibold"><a href="#features" onClick={() => setMobileOpen(false)} className="px-2 py-3">Features</a><a href="#solutions" onClick={() => setMobileOpen(false)} className="px-2 py-3">Solutions</a><a href="#pricing" onClick={() => setMobileOpen(false)} className="px-2 py-3">Pricing</a><a href="#faq" onClick={() => setMobileOpen(false)} className="px-2 py-3">FAQ</a><Link href="/login" className="px-2 py-3">Login</Link><Link href="/demo" className="mt-2 rounded-md bg-slate-950 px-4 py-3 text-center text-white">Try Interactive Demo</Link><Link href="/signup" className="rounded-md bg-blue-600 px-4 py-3 text-center text-white">Start Free Trial</Link></div></nav>}</header>
++
++    <section className="relative border-b border-slate-200 bg-white"><div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(37,99,235,0.07),transparent_42%),linear-gradient(180deg,white,#f7f8fa)]" /><div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 pb-20 pt-16 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8 lg:pb-24 lg:pt-24"><div><p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-blue-700"><span className="h-1.5 w-1.5 rounded-full bg-orange-500" /> Travel agency operations, simplified</p><h1 className="mt-6 max-w-2xl text-5xl font-semibold leading-[1.04] tracking-[-0.045em] text-slate-950 sm:text-6xl lg:text-[4.35rem]">Run your entire travel agency from one powerful workspace.</h1><p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">Manage customers, bookings, invoices, agents and daily operations without relying on scattered Excel files and WhatsApp conversations.</p><div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/signup" className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-600/15 transition hover:bg-blue-700">Start Free Trial <ArrowRight className="h-4 w-4" /></Link><Link href="/demo" className="inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-5 py-3.5 text-sm font-bold text-slate-900 transition hover:border-slate-400 hover:bg-slate-50">Explore Live Demo <ChevronRight className="h-4 w-4" /></Link></div><div className="mt-8 grid grid-cols-2 gap-x-5 gap-y-3 text-xs font-medium text-slate-600 sm:flex"><span className="inline-flex items-center gap-2"><Check className="h-4 w-4 text-emerald-500" /> Built for agencies</span><span className="inline-flex items-center gap-2"><Check className="h-4 w-4 text-emerald-500" /> Arabic + English</span><span className="inline-flex items-center gap-2"><Check className="h-4 w-4 text-emerald-500" /> Secure workspace</span><span className="inline-flex items-center gap-2"><Check className="h-4 w-4 text-emerald-500" /> Professional invoices</span></div></div><div className="relative"><div className="absolute -inset-5 rounded-2xl bg-blue-500/10 blur-2xl" /><div className="relative"><DashboardPreview /><div className="absolute -bottom-7 -left-4 hidden w-44 rounded-lg border border-slate-200 bg-white p-3 shadow-xl sm:block"><div className="flex items-center justify-between"><span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">Payment follow-up</span><MessageCircle className="h-3.5 w-3.5 text-emerald-600" /></div><p className="mt-2 text-xs font-semibold text-slate-800">Invoice INV-0048</p><p className="mt-1 text-[10px] text-slate-500">Ready to share via WhatsApp</p></div></div></div></div></section>
++
++    <section className="border-b border-slate-200 bg-white"><div className="mx-auto grid max-w-7xl divide-y divide-slate-200 px-5 sm:grid-cols-2 sm:divide-x sm:divide-y-0 sm:px-6 lg:grid-cols-4 lg:px-8">{[["ONE WORKSPACE", "Customers · Bookings · Invoices · Reports"], ["BUILT FOR OMAN", "Designed around local agency workflows"], ["BILINGUAL", "English + Arabic / RTL ready"], ["CLOUD WORKSPACE", "Access your operations securely"]].map(([title, copy]) => <div key={title} className="px-0 py-6 sm:px-6 lg:px-7"><p className="text-[10px] font-bold tracking-[0.16em] text-blue-700">{title}</p><p className="mt-2 text-xs leading-5 text-slate-500">{copy}</p></div>)}</div></section>
++
++    <section id="solutions" className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8"><div className="grid gap-14 lg:grid-cols-[0.75fr_1.25fr] lg:items-center"><div><p className="text-xs font-bold uppercase tracking-[0.22em] text-orange-600">The old way adds friction</p><h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.035em] text-slate-950 sm:text-5xl">Still running your agency across Excel and WhatsApp?</h2><p className="mt-5 text-base leading-7 text-slate-600">Important details get buried in conversations, spreadsheets, paper notes, and separate booking records. TravelDesk Pro brings the workflow together.</p></div><div className="grid gap-3 sm:grid-cols-3"><div className="border border-slate-200 bg-white p-5"><Search className="h-5 w-5 text-orange-500" /><h3 className="mt-8 text-sm font-bold text-slate-900">Scattered customer data</h3><p className="mt-2 text-sm leading-6 text-slate-500">Customer details and travel history are difficult to find.</p></div><div className="border border-slate-200 bg-white p-5"><Ticket className="h-5 w-5 text-orange-500" /><h3 className="mt-8 text-sm font-bold text-slate-900">Manual booking operations</h3><p className="mt-2 text-sm leading-6 text-slate-500">Passengers, suppliers, and payments spread across files.</p></div><div className="border border-slate-200 bg-white p-5"><Receipt className="h-5 w-5 text-orange-500" /><h3 className="mt-8 text-sm font-bold text-slate-900">Invoices and follow-ups</h3><p className="mt-2 text-sm leading-6 text-slate-500">Payment reminders become manual work.</p></div><div className="col-span-full flex flex-wrap items-center gap-2 border border-blue-200 bg-blue-50 p-4 text-xs font-bold text-blue-800 sm:gap-4"><span className="text-slate-500">Excel</span><ArrowRight className="h-4 w-4" /><span className="text-slate-500">WhatsApp</span><ArrowRight className="h-4 w-4" /><span className="text-slate-500">Paper</span><ArrowRight className="h-4 w-4" /><span className="text-blue-700">TravelDesk Pro</span></div></div></div></section>
++
++    <section id="features" className="border-y border-slate-200 bg-white"><div className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8"><div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-700">One connected workspace</p><h2 className="mt-4 text-4xl font-semibold tracking-[-0.035em] text-slate-950 sm:text-5xl">Everything your agency needs. One workspace.</h2><p className="mt-5 text-base leading-7 text-slate-600">The daily tools your team already needs, organized around the way a travel agency works.</p></div><div className="mt-14 grid gap-px overflow-hidden border border-slate-200 bg-slate-200 sm:grid-cols-2 lg:grid-cols-3">{modules.map(({ icon: Icon, label, copy }) => <div key={label} className="bg-white p-6 transition hover:bg-slate-50"><Icon className="h-5 w-5 text-blue-600" /><h3 className="mt-7 text-base font-bold text-slate-900">{label}</h3><p className="mt-2 text-sm leading-6 text-slate-500">{copy}</p><span className="mt-5 inline-flex items-center gap-1 text-xs font-bold text-blue-700">Explore module <ArrowRight className="h-3 w-3" /></span></div>)}</div></div></section>
++
++    <section className="bg-slate-950 py-24 text-white"><div className="mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-6 lg:grid-cols-[0.7fr_1.3fr] lg:px-8"><div><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-300">The command center</p><h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.035em] sm:text-5xl">Know what&apos;s happening in your agency at a glance.</h2><p className="mt-5 text-base leading-7 text-slate-300">A clear view of revenue, bookings, outstanding payments, departures, and recent activity helps your team act sooner.</p><Link href="/demo" className="mt-8 inline-flex items-center gap-2 rounded-md bg-white px-4 py-3 text-sm font-bold text-slate-950 transition hover:bg-blue-50">See it in the live demo <ArrowRight className="h-4 w-4" /></Link></div><DashboardPreview /></div></section>
++
++    <section className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8"><div className="grid items-center gap-14 lg:grid-cols-2"><div><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-700">Booking workflow</p><h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.035em] text-slate-950 sm:text-5xl">From customer request to confirmed booking.</h2><p className="mt-5 max-w-lg text-base leading-7 text-slate-600">Keep the details that matter together, from the first customer record through service, itinerary, passenger, payment, and confirmation.</p><div className="mt-8 space-y-2">{[["01", "Customer", "Select or create a customer profile"], ["02", "Service", "Flight, hotel, visa, tour, or other service"], ["03", "Itinerary", "Route, dates, supplier, and reference"], ["04", "Passenger", "Travel and passport information"], ["05", "Payment", "Cost, sale price, status, and commission"], ["06", "Confirmation", "A clear record your team can follow"]].map(([number, title, copy]) => <div key={number} className="flex items-center gap-4 border-b border-slate-200 py-3"><span className="text-[10px] font-bold text-blue-600">{number}</span><div><p className="text-sm font-bold text-slate-900">{title}</p><p className="text-xs text-slate-500">{copy}</p></div></div>)}</div></div><BrowserFrame><div className="bg-[#f4f6f8] p-4 sm:p-6"><div className="flex items-center justify-between"><div><p className="text-[9px] font-bold uppercase tracking-wider text-blue-600">New booking</p><h3 className="mt-1 text-lg font-bold text-slate-900">Flight ticket</h3></div><span className="rounded bg-amber-50 px-2 py-1 text-[9px] font-bold text-amber-700">Draft</span></div><div className="mt-5 grid gap-3 sm:grid-cols-2">{[["Customer", "Mariam Al Harthy"], ["Airline", "Oman Air"], ["Route", "MCT → DXB"], ["PNR", "OM7K2P"], ["Departure", "18 Sep 2026"], ["Payment", "Pending"]].map(([label, value]) => <div key={label} className="rounded-md border border-slate-200 bg-white p-3"><p className="text-[9px] text-slate-400">{label}</p><p className="mt-1 text-xs font-semibold text-slate-800">{value}</p></div>)}</div><div className="mt-4 flex justify-end"><span className="rounded-md bg-blue-600 px-4 py-2 text-[10px] font-bold text-white">Save booking</span></div></div></BrowserFrame></div></section>
++
++    <section className="border-y border-slate-200 bg-white"><div className="mx-auto grid max-w-7xl items-center gap-14 px-5 py-24 sm:px-6 lg:grid-cols-[1fr_0.9fr] lg:px-8"><div><p className="text-xs font-bold uppercase tracking-[0.22em] text-orange-600">Customer CRM</p><h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.035em] text-slate-950 sm:text-5xl">Every customer. Every trip. One profile.</h2><p className="mt-5 max-w-lg text-base leading-7 text-slate-600">Give your team the context to serve customers quickly, with contact information, passport details, booking history, notes, and spend in one place.</p><div className="mt-8 grid grid-cols-2 gap-3 text-sm font-semibold text-slate-700"><span className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600" /> Contact information</span><span className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600" /> Travel information</span><span className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600" /> Booking history</span><span className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600" /> Notes and spend</span></div></div><div className="border border-slate-200 bg-[#f4f6f8] p-4 sm:p-6"><div className="border border-slate-200 bg-white p-5"><div className="flex items-start justify-between"><div className="flex items-center gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">MA</span><div><h3 className="text-sm font-bold text-slate-900">Mariam Al Harthy</h3><p className="text-xs text-slate-500">Customer since 2024 · Oman</p></div></div><MoreHorizontal className="h-4 w-4 text-slate-400" /></div><div className="mt-6 grid grid-cols-2 gap-3"><div className="border border-slate-100 p-3"><p className="text-[9px] text-slate-400">Bookings</p><p className="mt-1 text-lg font-bold text-slate-900">8</p></div><div className="border border-slate-100 p-3"><p className="text-[9px] text-slate-400">Total spend</p><p className="mt-1 text-lg font-bold text-slate-900">OMR 2,840</p></div></div><div className="mt-5 border-t border-slate-100 pt-4"><p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">Recent booking history</p><div className="mt-3 space-y-3">{[["Flight · MCT-DXB", "18 Sep 2026", "Pending"], ["Hotel · Salalah", "02 Aug 2026", "Paid"]].map(([service, date, status]) => <div key={service} className="flex justify-between text-xs"><span className="font-medium text-slate-800">{service}<span className="block text-[10px] font-normal text-slate-400">{date}</span></span><span className={status === "Paid" ? "text-emerald-600" : "text-amber-600"}>{status}</span></div>)}</div></div><p className="mt-5 border-t border-slate-100 pt-4 text-xs text-slate-500">Note: Prefers morning departures.</p></div></div></div></section>
++
++    <section className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8"><div className="grid items-center gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:px-8"><div><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-700">Invoice workspace</p><h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.035em] text-slate-950 sm:text-5xl">Professional invoices that represent your agency.</h2><p className="mt-5 text-base leading-7 text-slate-600">Create branded, customer-ready invoices with service details, line items, totals, payment status, and agency information.</p><div className="mt-8 flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-wider text-slate-500"><span className="rounded border border-slate-200 bg-white px-3 py-2">PDF</span><span className="rounded border border-slate-200 bg-white px-3 py-2">Print</span><span className="rounded border border-emerald-200 bg-emerald-50 px-3 py-2 text-emerald-700">WhatsApp sharing</span></div></div><div className="bg-slate-100 p-4 sm:p-8"><InvoicePreview /></div></div></section>
++
++    <section className="border-y border-slate-200 bg-white"><div className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8"><div className="grid items-center gap-14 lg:grid-cols-2"><div><p className="text-xs font-bold uppercase tracking-[0.22em] text-emerald-700">WhatsApp workflow</p><h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.035em] text-slate-950 sm:text-5xl">Keep customers informed without leaving your workflow.</h2><p className="mt-5 max-w-lg text-base leading-7 text-slate-600">Use the currently supported WhatsApp Web sharing flow to send prepared customer messages from the records your team already manages.</p><div className="mt-8 space-y-3">{[["Invoice", "Share an invoice summary with the customer"], ["Booking confirmation", "Send a prepared booking message"], ["Payment reminder", "Follow up on pending amounts"], ["Itinerary", "Keep travel details close to the conversation"]].map(([title, copy]) => <div key={title} className="flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-md bg-emerald-50 text-emerald-600"><MessageCircle className="h-4 w-4" /></span><div><p className="text-sm font-bold text-slate-900">{title}</p><p className="text-xs text-slate-500">{copy}</p></div></div>)}</div><div className="mt-8 border-l-2 border-emerald-500 pl-4 text-xs leading-5 text-slate-500"><strong className="text-slate-800">WhatsApp sharing available.</strong> WhatsApp Business API integration is a future integration, not an active product claim.</div></div><div className="rounded-lg border border-slate-200 bg-[#f4f6f8] p-5"><div className="ml-auto max-w-sm rounded-lg rounded-tr-sm bg-emerald-600 p-4 text-white shadow-sm"><p className="text-[10px] font-bold text-emerald-100">TravelDesk Pro · Invoice message</p><p className="mt-3 text-sm leading-6">Hello Mariam, your invoice INV-0048 is ready. Amount: 456.75 OMR. Due date: 06 Oct 2026.</p><div className="mt-4 flex items-center justify-between text-[10px] text-emerald-100"><span>Prepared from invoice record</span><span>09:42</span></div></div><div className="mt-4 max-w-sm rounded-lg rounded-tl-sm border border-slate-200 bg-white p-4"><p className="text-[10px] font-bold text-slate-400">Customer response</p><p className="mt-2 text-sm text-slate-700">Thank you, received. I&apos;ll complete the payment today.</p></div></div></div></div></section>
++
++    <section className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8"><div className="grid items-center gap-14 lg:grid-cols-[0.8fr_1.2fr]"><div><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-700">Operations calendar</p><h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.035em] text-slate-950 sm:text-5xl">Never miss the next important date.</h2><p className="mt-5 max-w-lg text-base leading-7 text-slate-600">Keep bookings, departures, returns, reminders, and deadlines visible in one agency calendar.</p><div className="mt-8 flex flex-wrap gap-2 text-xs font-semibold text-slate-600"><span className="rounded border border-blue-200 bg-blue-50 px-3 py-2 text-blue-700">Bookings</span><span className="rounded border border-cyan-200 bg-cyan-50 px-3 py-2 text-cyan-700">Departures</span><span className="rounded border border-amber-200 bg-amber-50 px-3 py-2 text-amber-700">Reminders</span><span className="rounded border border-red-200 bg-red-50 px-3 py-2 text-red-700">Deadlines</span></div></div><CalendarPreview /></div></section>
++
++    <section className="bg-slate-950 py-24 text-white"><div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8"><div className="grid items-center gap-14 lg:grid-cols-2"><div><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-300">Reports and visibility</p><h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.035em] sm:text-5xl">See where your agency is making money.</h2><p className="mt-5 max-w-lg text-base leading-7 text-slate-300">Turn the records your team already maintains into a clearer view of revenue, bookings, costs, profit, commissions, and outstanding invoices.</p><div className="mt-8 grid grid-cols-2 gap-3 text-sm text-slate-300"><span className="flex items-center gap-2"><BarChart3 className="h-4 w-4 text-blue-300" /> Revenue and costs</span><span className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-blue-300" /> Profit visibility</span><span className="flex items-center gap-2"><UserCheck className="h-4 w-4 text-blue-300" /> Staff performance</span><span className="flex items-center gap-2"><Receipt className="h-4 w-4 text-blue-300" /> Pending invoices</span></div></div><div className="rounded-lg border border-white/10 bg-white/[0.06] p-5"><div className="flex justify-between"><div><p className="text-xs font-bold text-white">Performance overview</p><p className="mt-1 text-[10px] text-slate-400">Illustrative preview data</p></div><span className="rounded border border-white/10 px-2 py-1 text-[9px] text-slate-400">Last 30 days</span></div><div className="mt-8 flex h-44 items-end gap-2 border-b border-l border-white/10 px-4">{[30, 42, 36, 58, 51, 70, 62, 82, 74, 92, 78, 96].map((height, index) => <div key={index} className="flex flex-1 items-end gap-0.5"><span className="w-1/2 bg-blue-400" style={{ height: `${height}%` }} /><span className="w-1/2 bg-orange-400/80" style={{ height: `${Math.max(height - 18, 16)}%` }} /></div>)}</div><div className="mt-4 flex justify-between text-[9px] text-slate-400"><span>Revenue</span><span className="text-blue-300">■</span><span>Cost</span><span className="text-orange-300">■</span><span>Week 1</span><span>Week 4</span></div></div></div></div></section>
++
++    <section className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8"><div className="grid items-center gap-14 lg:grid-cols-2"><div><p className="text-xs font-bold uppercase tracking-[0.22em] text-orange-600">Bilingual by design</p><h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.035em] text-slate-950 sm:text-5xl">Built for bilingual agency teams.</h2><p className="mt-5 max-w-lg text-base leading-7 text-slate-600">Switch between English and Arabic workspace direction as your team needs. The interface is prepared for RTL layouts across navigation, forms, and operational views.</p><div className="mt-8 flex gap-2"><span className="rounded-md bg-slate-950 px-4 py-2.5 text-sm font-bold text-white">English</span><span className="rounded-md border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold text-slate-700">العربية · RTL</span></div></div><div className="grid gap-3 sm:grid-cols-2"><div className="border border-slate-200 bg-white p-5 shadow-sm"><div className="flex items-center justify-between"><span className="text-xs font-bold text-slate-900">Command center</span><Globe2 className="h-4 w-4 text-blue-600" /></div><div className="mt-5 space-y-3 text-right" dir="rtl"><div className="h-2 w-3/4 rounded bg-slate-200" /><div className="h-2 w-1/2 rounded bg-slate-100" /><div className="grid grid-cols-3 gap-2"><span className="h-12 rounded bg-blue-50" /><span className="h-12 rounded bg-emerald-50" /><span className="h-12 rounded bg-amber-50" /></div><p className="text-xs font-bold text-slate-700">إدارة وكالتك في مكان واحد</p></div></div><div className="border border-slate-200 bg-slate-50 p-5"><div className="flex items-center justify-between"><span className="text-xs font-bold text-slate-900">Workspace ready</span><ShieldCheck className="h-4 w-4 text-emerald-600" /></div><p className="mt-7 text-2xl font-semibold text-slate-900">English + Arabic</p><p className="mt-2 text-xs leading-5 text-slate-500">A bilingual foundation for teams across Oman and the GCC.</p></div></div></div></section>
++
++    <section className="border-y border-slate-200 bg-white"><div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-24 sm:px-6 lg:grid-cols-[1fr_0.8fr] lg:px-8"><div><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-700">Your agency travels with you</p><h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.035em] text-slate-950 sm:text-5xl">Keep the work moving from anywhere.</h2><p className="mt-5 max-w-lg text-base leading-7 text-slate-600">A responsive workspace for the moments between the desk, the airport, and the next customer conversation.</p><div className="mt-8 space-y-3 text-sm font-semibold text-slate-700"><span className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600" /> Review bookings on the go</span><span className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600" /> Find customer details quickly</span><span className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600" /> Share invoice summaries through WhatsApp Web</span></div></div><div className="mx-auto w-full max-w-[260px] rounded-[1.7rem] border-[7px] border-slate-900 bg-slate-900 shadow-2xl"><div className="overflow-hidden rounded-[1.2rem] bg-[#f4f6f8]"><div className="flex items-center justify-between bg-white px-4 py-4"><span className="text-xs font-bold text-slate-900">Command center</span><span className="h-6 w-6 rounded-full bg-orange-100" /></div><div className="space-y-3 p-3"><div className="grid grid-cols-2 gap-2">{[["Revenue", "OMR 12.4k"], ["Bookings", "186"], ["Pending", "OMR 2.1k"], ["Customers", "328"]].map(([label, value]) => <div key={label} className="rounded border border-slate-200 bg-white p-2"><p className="text-[8px] text-slate-400">{label}</p><p className="mt-1 text-[11px] font-bold text-slate-900">{value}</p></div>)}</div><div className="rounded border border-slate-200 bg-white p-3"><p className="text-[9px] font-bold text-slate-800">Recent bookings</p>{["MCT → DXB", "Hotel · Salalah", "Visa · UK"].map((item) => <div key={item} className="mt-3 flex justify-between border-t border-slate-100 pt-2 text-[9px]"><span className="font-medium text-slate-700">{item}</span><span className="text-emerald-600">Ready</span></div>)}</div></div></div></div></div></section>
++
++    <section className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8"><div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]"><div><p className="text-xs font-bold uppercase tracking-[0.22em] text-orange-600">Why TravelDesk Pro</p><h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.035em] text-slate-950 sm:text-5xl">Built around how travel agencies actually work.</h2></div><div className="grid gap-px border border-slate-200 bg-slate-200 sm:grid-cols-2">{[["One workspace", "Replace scattered operational files with one system."], ["Faster operations", "Keep customer, booking, and invoice workflows connected."], ["Better visibility", "See revenue, bookings, and outstanding payments clearly."], ["Ready for growth", "Start with your current team and scale your workspace."]].map(([title, copy]) => <div key={title} className="bg-white p-6"><ShieldCheck className="h-5 w-5 text-blue-600" /><h3 className="mt-6 text-sm font-bold text-slate-900">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-500">{copy}</p></div>)}</div></div></section>
++
++    <section id="pricing" className="border-y border-slate-200 bg-white"><div className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8"><div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-700">Pricing</p><h2 className="mt-4 text-4xl font-semibold tracking-[-0.035em] text-slate-950 sm:text-5xl">Simple plans for growing agencies.</h2><p className="mt-5 text-base leading-7 text-slate-600">Start small, then upgrade as your team and booking volume grow.</p></div><div className="mt-14 grid gap-4 lg:grid-cols-3">{pricing.map((plan) => <div key={plan.name} className={`relative border p-7 ${plan.featured ? "border-blue-600 bg-slate-950 text-white shadow-xl shadow-blue-900/15" : "border-slate-200 bg-white text-slate-950"}`}>{plan.featured && <div className="absolute end-6 top-6 rounded bg-orange-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">Recommended</div>}<p className="text-xs font-bold uppercase tracking-wider opacity-60">{plan.name}</p><p className="mt-6 text-4xl font-semibold">{plan.price}<span className={`text-sm font-medium ${plan.featured ? "text-slate-400" : "text-slate-500"}`}> / month</span></p><p className={`mt-3 text-sm ${plan.featured ? "text-slate-300" : "text-slate-500"}`}>{plan.description}</p><ul className="mt-8 space-y-3">{plan.features.map((item) => <li key={item} className="flex items-start gap-2 text-sm"><Check className={`mt-0.5 h-4 w-4 shrink-0 ${plan.featured ? "text-emerald-300" : "text-emerald-600"}`} />{item}</li>)}</ul><Link href="/signup" className={`mt-9 inline-flex w-full items-center justify-center rounded-md px-4 py-3 text-sm font-bold ${plan.featured ? "bg-white text-slate-950 hover:bg-blue-50" : "bg-blue-600 text-white hover:bg-blue-700"}`}>Start Free Trial</Link></div>)}</div></div></section>
++
++    <section id="faq" className="mx-auto max-w-4xl px-5 py-24 sm:px-6 lg:px-8"><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-700">Questions</p><h2 className="mt-4 text-4xl font-semibold tracking-[-0.035em] text-slate-950">FAQ</h2><div className="mt-8 divide-y divide-slate-200 border-y border-slate-200">{faqs.map((faq, index) => <div key={faq.question}><button type="button" onClick={() => setOpenFaq(openFaq === index ? null : index)} aria-expanded={openFaq === index} className="flex w-full items-center justify-between gap-4 py-5 text-start"><span className="text-sm font-bold text-slate-900">{faq.question}</span><ChevronDown className={`h-4 w-4 shrink-0 text-slate-500 transition-transform ${openFaq === index ? "rotate-180" : ""}`} /></button>{openFaq === index && <p className="max-w-2xl pb-5 text-sm leading-6 text-slate-600">{faq.answer}</p>}</div>)}</div></section>
++
++    <section className="px-5 pb-24 sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl border border-blue-700 bg-blue-700 px-6 py-14 text-center text-white sm:px-12"><h2 className="text-3xl font-semibold tracking-[-0.03em] sm:text-4xl">Ready to run your agency from one workspace?</h2><p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-blue-100">Bring customers, bookings, invoices, and daily operations together with TravelDesk Pro.</p><div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row"><Link href="/signup" className="rounded-md bg-white px-5 py-3.5 text-sm font-bold text-slate-950 hover:bg-blue-50">Start Free Trial</Link><Link href="/demo" className="rounded-md border border-white/40 px-5 py-3.5 text-sm font-bold text-white hover:bg-white/10">Explore Interactive Demo</Link></div></div></section>
++
++    <footer id="contact" className="bg-slate-950 px-5 py-16 text-white sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.75fr]"><div><Logo light /><p className="mt-6 max-w-lg text-sm leading-7 text-slate-400">Professional travel-agency operations for customers, bookings, invoices, agents, and reporting in one workspace.</p><div className="mt-8 grid gap-3 text-sm text-slate-300 sm:grid-cols-2"><a href="mailto:admin@traveldeskpro.app" className="flex items-center gap-2 hover:text-white"><Mail className="h-4 w-4 text-blue-300" /> admin@traveldeskpro.app</a><a href="tel:+96875135022" className="flex items-center gap-2 hover:text-white"><Phone className="h-4 w-4 text-blue-300" /> +968-75135022</a><a href={whatsappHref} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-white"><MessageCircle className="h-4 w-4 text-emerald-300" /> WhatsApp +968-75135022</a><a href="https://www.traveldeskpro.app" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-white"><ExternalLink className="h-4 w-4 text-blue-300" /> traveldeskpro.app</a></div><nav className="mt-8 flex flex-wrap gap-5 text-sm font-semibold text-slate-400"><a href="#features" className="hover:text-white">Features</a><a href="#pricing" className="hover:text-white">Pricing</a><a href="#faq" className="hover:text-white">FAQ</a><Link href="/login" className="hover:text-white">Login</Link><Link href="/demo" className="hover:text-white">Interactive demo</Link></nav></div><DemoRequestForm /></div><div className="mx-auto mt-12 flex max-w-7xl flex-col gap-3 border-t border-white/10 pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between"><span>© {new Date().getFullYear()} TravelDesk Pro. All rights reserved.</span><span>Built for travel agencies in Oman and the GCC.</span></div></footer>
++  </main>;
++}

@@ -49,9 +49,10 @@ export default function Sidebar() {
   return (
     <>
       <button
+        type="button"
+        aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="fixed top-4 z-50 md:hidden bg-white p-2 rounded-lg shadow-md border border-slate-200"
-        style={{ [isRTL ? "left" : "right"]: "1rem" }}
+        className="fixed end-4 top-4 z-50 rounded-md border border-slate-200 bg-white p-2 shadow-sm dark:border-slate-700 dark:bg-slate-900 md:hidden"
       >
         {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
       </button>
@@ -65,14 +66,14 @@ export default function Sidebar() {
 
       <aside
         className={cn(
-          "fixed md:sticky top-0 z-40 h-screen w-64 bg-white border-r border-slate-200 flex flex-col transition-transform duration-300",
+          "fixed md:sticky top-0 z-40 h-screen w-64 bg-white border-r border-slate-200 flex flex-col transition-transform duration-300 dark:border-slate-800 dark:bg-slate-950",
           mobileOpen ? "translate-x-0" : isRTL ? "translate-x-full md:translate-x-0" : "-translate-x-full md:translate-x-0",
           isRTL ? "border-l border-r-0" : ""
         )}
         style={{ right: isRTL ? "0" : "auto", left: isRTL ? "auto" : "0" }}
       >
         <div className="p-6 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-brand-orange flex items-center justify-center shadow-sm">
+          <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand text-white">
             <Briefcase className="w-5 h-5 text-white" />
           </div>
           <div>
@@ -90,7 +91,7 @@ export default function Sidebar() {
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                  "flex items-center gap-3 rounded-[0.625rem] px-3 py-2.5 text-sm font-medium transition-colors",
                   isActive
                     ? "bg-brand/10 text-brand"
                     : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"

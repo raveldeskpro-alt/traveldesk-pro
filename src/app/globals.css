@@ -23,10 +23,15 @@
     --border: 214 32% 91%;
     --input: 214 32% 91%;
     --ring: 221 83% 53%;
-    --radius: 0.75rem;
+    --radius: 0.625rem;
     --sidebar-bg: #ffffff;
     --card-bg: #ffffff;
-    --page-bg: #F6F8FC;
+    --page-bg: #f4f6f8;
+    --surface-muted: #f8fafc;
+    --surface-subtle: #eef2f6;
+    --text-strong: #172033;
+    --text-muted: #64748b;
+    --focus-ring: rgba(37, 99, 235, 0.28);
   }
 
   .dark {
@@ -51,16 +56,31 @@
     --ring: 221 83% 53%;
     --sidebar-bg: #0B1120;
     --card-bg: #111827;
-    --page-bg: #0B1120;
+    --page-bg: #0f172a;
+    --surface-muted: #172033;
+    --surface-subtle: #1e293b;
+    --text-strong: #f8fafc;
+    --text-muted: #94a3b8;
+    --focus-ring: rgba(96, 165, 250, 0.4);
   }
 
   * {
     @apply border-border;
   }
 
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: rgba(37, 99, 235, 0.18);
+  }
+
   body {
     @apply bg-soft-bg text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
+    min-width: 320px;
   }
 
   html[dir="rtl"] body {
@@ -177,4 +197,14 @@
 }
 .dark-modal-header {
   @apply bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800;
+}
+
+@layer components {
+  .page-container {
+    @apply mx-auto w-full max-w-[1600px] px-4 py-5 sm:px-6 lg:px-8 lg:py-7;
+  }
+
+  .form-control {
+    @apply w-full rounded-[0.625rem] border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 transition-colors placeholder:text-slate-400 hover:border-slate-300 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 dark:hover:border-slate-600 dark:disabled:bg-slate-900;
+  }
 }

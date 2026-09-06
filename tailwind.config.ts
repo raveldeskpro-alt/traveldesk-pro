@@ -53,6 +53,7 @@ const config: Config = {
       boxShadow: {
         '3d': '0 20px 60px -10px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)',
         'glow': '0 0 40px rgba(37, 99, 235, 0.15)',
+        'surface': '0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.04)',
       },
     },
   },
