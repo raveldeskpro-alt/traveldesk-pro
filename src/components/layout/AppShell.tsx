@@ -93,7 +93,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const isSuspendedAgency = user?.role !== "super_admin" && agency?.status === "suspended";
 
   return (
-    <div className="h-screen overflow-hidden flex bg-[var(--page-bg)] transition-colors duration-300">
+    <div className="flex h-screen min-w-0 overflow-hidden bg-[var(--page-bg)] transition-colors duration-300">
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
@@ -104,7 +104,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:sticky lg:top-0 inset-y-0 z-[90] h-screen shrink-0 bg-[var(--sidebar-bg)] border-r border-slate-200/50 dark:border-slate-800/50 transition-all duration-300 flex flex-col shadow-xl shadow-slate-900/5 lg:shadow-none ${
+        className={`fixed lg:sticky lg:top-0 inset-y-0 z-[90] h-screen shrink-0 bg-[var(--sidebar-bg)] border-r border-slate-200 dark:border-slate-800 transition-transform duration-300 flex flex-col shadow-xl shadow-slate-900/10 lg:shadow-none ${
           isRTL ? "border-r-0 border-l border-slate-200/50 dark:border-slate-800/50 right-0" : "left-0"
         } ${
           mobileOpen
@@ -130,6 +130,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </div>
           <div className="lg:hidden">
             <button
+              type="button"
+              aria-label="Close navigation"
               onClick={() => setMobileOpen(false)}
               className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors text-slate-600 dark:text-slate-400"
             >
@@ -138,6 +140,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </div>
           <div className="hidden lg:block">
             <button
+              type="button"
+              aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
+              title={collapsed ? "Expand navigation" : "Collapse navigation"}
               onClick={() => setCollapsed(!collapsed)}
               className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors text-slate-500 dark:text-slate-400"
             >
@@ -164,13 +169,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  title={collapsed ? item.label : undefined}
+                  className={`flex items-center gap-3 px-3 py-2 rounded-[0.625rem] text-sm font-medium transition-colors ${
                   isActive
                     ? "bg-brand/10 text-brand dark:bg-brand/20 dark:text-brand shadow-sm"
                     : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-navy dark:hover:text-white"
                 } ${collapsed && "lg:justify-center lg:px-2"}`}
               >
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
+                  <div className={`w-8 h-8 rounded-md flex items-center justify-center ${
                   isActive 
                     ? "bg-brand text-white shadow-md shadow-brand/30" 
                     : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"
@@ -183,7 +189,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 {isActive && !collapsed && (
                   <div
                     className={`w-1.5 h-1.5 rounded-full bg-brand-orange ${
-                      isRTL ? "mr-auto" : "ml-auto"
+                      "ms-auto"
                     }`}
                   />
                 )}
@@ -199,7 +205,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <div className="space-y-1.5">
           <button
             onClick={toggleDark}
-            className={`flex items-center gap-3 px-3 py-2.5 w-full rounded-xl text-sm font-medium transition-colors ${
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            className={`flex items-center gap-3 px-3 py-2 w-full rounded-[0.625rem] text-sm font-medium transition-colors ${
               collapsed && "lg:justify-center lg:px-2"
             } ${
               isDark 
@@ -214,7 +221,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </button>
           <button
             onClick={toggleLang}
-            className={`flex items-center gap-3 px-3 py-2.5 w-full rounded-xl text-sm font-medium transition-colors ${
+            aria-label={language === "en" ? "Switch to Arabic" : "Switch to English"}
+            className={`flex items-center gap-3 px-3 py-2 w-full rounded-[0.625rem] text-sm font-medium transition-colors ${
               collapsed && "lg:justify-center lg:px-2"
             } text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800`}
           >
@@ -225,7 +233,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </button>
           <button
             onClick={logout}
-            className={`flex items-center gap-3 px-3 py-2.5 w-full rounded-xl text-sm font-medium transition-colors ${
+            aria-label={t("logout")}
+            className={`flex items-center gap-3 px-3 py-2 w-full rounded-[0.625rem] text-sm font-medium transition-colors ${
               collapsed && "lg:justify-center lg:px-2"
             } text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10`}
           >
@@ -238,11 +247,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
-        <header className="h-16 shrink-0 bg-[var(--sidebar-bg)]/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between px-4 lg:px-8 z-30 transition-colors">
+        <header className="h-16 shrink-0 bg-[var(--sidebar-bg)] border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 lg:px-8 z-30 transition-colors">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors text-slate-600 dark:text-slate-400"
+              aria-label="Open navigation"
+              className="lg:hidden rounded-md p-2 text-slate-600 transition-colors hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
             >
               <Menu className="w-5 h-5" />
             </button>
@@ -257,7 +267,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-orange to-orange-500 text-white flex items-center justify-center font-semibold text-sm shadow-lg shadow-brand-orange/30">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-orange text-sm font-semibold text-white">
               {user?.name
                 ?.split(" ")
                 .map((n) => n[0])
@@ -275,10 +285,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        <main className="flex-1 min-h-0 overflow-y-auto p-4 lg:p-8 travel-bg">
+        <main className="min-w-0 flex-1 min-h-0 overflow-x-hidden overflow-y-auto bg-[var(--page-bg)]">
+          <div className="page-container">
           {isSuspendedAgency ? (
             <div className="min-h-full flex items-center justify-center">
-              <div className="max-w-lg rounded-2xl border border-red-200 dark:border-red-800/50 bg-white dark:bg-slate-900 p-8 text-center shadow-sm">
+              <div className="max-w-lg rounded-[0.625rem] border border-red-200 bg-white p-8 text-center shadow-surface dark:border-red-800/50 dark:bg-slate-900">
                 <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 dark:bg-red-900/30 text-red-600">
                   <AlertTriangle className="h-7 w-7" />
                 </div>
@@ -286,15 +297,17 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
                   Your agency subscription is currently suspended. Please contact TravelDesk Pro support to reactivate access.
                 </p>
-                <button
+                  <button
+                  type="button"
                   onClick={logout}
-                  className="mt-6 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-700"
+                    className="mt-6 rounded-[0.625rem] bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-700"
                 >
                   Logout
                 </button>
               </div>
             </div>
           ) : children}
+          </div>
         </main>
       </div>
     </div>

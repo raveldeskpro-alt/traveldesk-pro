@@ -35,7 +35,7 @@ function CustomCaption({ calendarMonth }: { calendarMonth: CalendarMonth }) {
   const current = calendarMonth.date;
 
   const navBtn =
-    'p-1.5 rounded-lg transition-colors text-slate-500 dark:text-slate-400 ' +
+    'p-1.5 rounded-md transition-colors text-slate-500 dark:text-slate-400 ' +
     'hover:bg-slate-100 dark:hover:bg-slate-800 ' +
     'disabled:opacity-30 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40';
 
@@ -140,7 +140,7 @@ export function DatePicker({
         onClick={() => setOpen((o) => !o)}
         onKeyDown={handleKeyDown}
         className={[
-          'w-full flex items-center gap-2 px-3 py-2.5 rounded-lg border text-sm text-left',
+          'w-full flex items-center gap-2 px-3 py-2.5 rounded-[0.625rem] border text-sm text-start',
           'transition-colors focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand',
           'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800',
           'disabled:opacity-50 disabled:cursor-not-allowed',
@@ -162,7 +162,7 @@ export function DatePicker({
             'absolute z-[300] mt-1 left-0',
             'bg-white dark:bg-slate-900',
             'border border-slate-200 dark:border-slate-700',
-            'rounded-xl shadow-2xl shadow-slate-900/20 dark:shadow-slate-900/60',
+            'rounded-[0.625rem] shadow-surface dark:shadow-slate-950/50',
             'min-w-[280px]',
           ].join(' ')}
         >

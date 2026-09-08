@@ -1,471 +1,163 @@
+"use client";
+
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
 import DemoRequestForm from "@/components/marketing/DemoRequestForm";
 import {
-  ArrowRight,
-  BarChart3,
-  CalendarCheck,
-  Check,
-  ExternalLink,
-  FileText,
-  Globe2,
-  Mail,
-  MessageCircle,
-  Phone,
-  Plane,
-  ShieldCheck,
-  Sparkles,
-  Ticket,
-  Users,
+  ArrowRight, BarChart3, CalendarCheck, Check, ChevronDown, CircleDollarSign,
+  FileText, Globe2, Mail, Menu, MessageCircle, MoreHorizontal, Phone, Plane,
+  Receipt, ShieldCheck, Ticket, TrendingUp, UserCheck, Users, X,
 } from "lucide-react";
-
-const features = [
-  {
-    icon: Users,
-    title: "Customer CRM",
-    description: "Keep passport details, contact history, preferences, and travel documents organized in one secure profile.",
-  },
-  {
-    icon: Ticket,
-    title: "Booking operations",
-    description: "Track flights, hotels, visas, tours, costs, sale price, and booking status without scattered spreadsheets.",
-  },
-  {
-    icon: FileText,
-    title: "Professional invoices",
-    description: "Create branded invoices, monitor pending payments, and share clean customer-ready documents.",
-  },
-  {
-    icon: BarChart3,
-    title: "Reports and profit visibility",
-    description: "Understand revenue, cost, profit, pending payments, and agency performance from a command center.",
-  },
-  {
-    icon: CalendarCheck,
-    title: "Calendar workflow",
-    description: "Stay ahead of departures, due dates, follow-ups, visa timelines, and important agency tasks.",
-  },
-  {
-    icon: Globe2,
-    title: "Arabic and English",
-    description: "Serve local teams with bilingual support designed for travel agencies in Oman.",
-  },
-];
-
-const pricing = [
-  {
-    name: "Starter",
-    price: "30 OMR",
-    description: "For small agencies getting organized.",
-    features: ["Core CRM", "Bookings", "Invoices", "Basic reports"],
-  },
-  {
-    name: "Professional",
-    price: "40 OMR",
-    description: "For growing agencies that need control.",
-    featured: true,
-    features: ["Everything in Starter", "Agents and commissions", "Advanced reports", "Arabic + English workspace"],
-  },
-  {
-    name: "Enterprise",
-    price: "150 OMR",
-    description: "For larger teams with advanced needs.",
-    features: ["Multi-branch setup", "Priority support", "Custom onboarding", "Admin controls"],
-  },
-];
-
-const faqs = [
-  {
-    question: "Is TravelDesk Pro built for Oman?",
-    answer: "Yes. The product is positioned for Omani travel agencies with OMR pricing, Arabic support, and agency workflows.",
-  },
-  {
-    question: "Can I try it before signing up?",
-    answer: "Yes. The interactive demo lets you explore the workspace without touching production data.",
-  },
-  {
-    question: "Does it replace spreadsheets?",
-    answer: "Yes. Customers, bookings, invoices, agents, and reports can live in one cloud workspace instead of separate files.",
-  },
-];
 
 const whatsappHref = "https://api.whatsapp.com/send?phone=96875135022";
 
-export default function Home() {
-  return (
-    <main className="min-h-screen overflow-hidden bg-[#F8FAFC] text-slate-950">
-      <section className="relative isolate">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(37,99,235,0.14),transparent_34%),radial-gradient(circle_at_80%_10%,rgba(249,115,22,0.12),transparent_28%),linear-gradient(180deg,#ffffff_0%,#f8fafc_70%)]" />
-        <div className="absolute inset-x-0 top-0 -z-10 h-[620px] opacity-[0.08] [background-image:linear-gradient(90deg,#2563eb_1px,transparent_1px),linear-gradient(0deg,#2563eb_1px,transparent_1px)] [background-size:72px_72px]" />
-        <div className="absolute right-0 top-24 -z-10 h-72 w-72 rounded-full border border-blue-200/80 bg-[conic-gradient(from_140deg,#dbeafe,#ffffff,#fed7aa,#dbeafe)] opacity-70 blur-sm" />
-        <div className="absolute left-1/2 top-0 -z-10 h-[520px] w-[920px] -translate-x-1/2 rounded-full bg-blue-500/10 blur-3xl" />
+const pricing = [
+  { name: "Starter", price: "30 OMR", description: "For small agencies getting organized.", features: ["Core CRM", "Bookings", "Invoices", "Basic reports"] },
+  { name: "Professional", price: "40 OMR", description: "For growing agencies that need control.", featured: true, features: ["Everything in Starter", "Agents and commissions", "Advanced reports", "Arabic + English workspace"] },
+  { name: "Enterprise", price: "150 OMR", description: "For larger teams with advanced needs.", features: ["Multi-branch setup", "Priority support", "Custom onboarding", "Admin controls"] },
+];
 
-        <header className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-3" aria-label="TravelDesk Pro home">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <img src="/images/icon traveldesk.png" alt="" className="h-7 w-7 object-contain" />
-            </span>
-            <span className="text-lg font-extrabold tracking-tight text-slate-950">
-              TravelDesk<span className="text-[#F97316]">Pro</span>
-            </span>
-          </Link>
+const faqs = [
+  ["Is TravelDesk Pro built for Oman?", "Yes. The product is positioned for Omani travel agencies with OMR pricing, Arabic support, and agency workflows."],
+  ["Can I try it before signing up?", "Yes. The interactive demo lets you explore the workspace without touching production data."],
+  ["Does it replace spreadsheets?", "Yes. Customers, bookings, invoices, agents, and reports can live in one cloud workspace instead of separate files."],
+];
 
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-slate-600 md:flex">
-            <a href="#features" className="hover:text-slate-950">Features</a>
-            <a href="#pricing" className="hover:text-slate-950">Pricing</a>
-            <a href="#faq" className="hover:text-slate-950">FAQ</a>
-            <Link href="/login" className="hover:text-slate-950">Login</Link>
-          </nav>
-
-          <Link
-            href="/demo"
-            className="hidden rounded-full bg-slate-950 px-5 py-2.5 text-sm font-bold text-white shadow-xl shadow-slate-900/10 transition hover:-translate-y-0.5 hover:bg-slate-800 sm:inline-flex"
-          >
-            Try Interactive Demo
-          </Link>
-        </header>
-
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 pb-20 pt-12 sm:px-6 lg:grid-cols-[1fr_0.92fr] lg:px-8 lg:pb-28 lg:pt-20">
-          <div>
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/80 px-4 py-2 text-sm font-semibold text-blue-700 shadow-sm">
-              <Sparkles className="h-4 w-4" />
-              The modern operating system for travel agencies in Oman
-            </div>
-            <h1 className="max-w-4xl text-5xl font-black tracking-[-0.04em] text-slate-950 sm:text-6xl lg:text-7xl">
-              The all-in-one platform for modern travel agencies
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
-              Manage customers, bookings, invoices, agents, and reports from one secure cloud workspace built for travel agencies in Oman.
-            </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/signup"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#2563EB] px-6 py-4 text-base font-bold text-white shadow-2xl shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-700"
-              >
-                Start Free Trial
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/demo"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-6 py-4 text-base font-bold text-slate-900 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50"
-              >
-                Try Interactive Demo
-              </Link>
-            </div>
-            <div className="mt-8 flex flex-wrap gap-4 text-sm font-medium text-slate-500">
-              <span className="inline-flex items-center gap-2"><Check className="h-4 w-4 text-emerald-500" /> No credit card required</span>
-              <span className="inline-flex items-center gap-2"><Check className="h-4 w-4 text-emerald-500" /> Interactive demo</span>
-              <span className="inline-flex items-center gap-2"><Check className="h-4 w-4 text-emerald-500" /> Built for Oman</span>
-            </div>
-          </div>
-
-          <div className="relative min-h-[620px] lg:[perspective:1400px]">
-            <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-blue-500/20 to-orange-500/10 blur-2xl" />
-            <div className="absolute right-2 top-0 hidden w-40 rotate-6 rounded-[1.6rem] border border-white/80 bg-white p-3 shadow-2xl shadow-slate-900/12 md:block">
-              <div className="h-24 rounded-2xl bg-[linear-gradient(135deg,#0ea5e9,#2563eb)] p-3 text-white">
-                <Plane className="h-5 w-5" />
-                <p className="mt-6 text-xs font-bold">Muscat</p>
-                <p className="text-[10px] text-blue-100">Daily departures</p>
-              </div>
-            </div>
-            <div className="absolute bottom-14 left-0 hidden w-44 -rotate-6 rounded-[1.6rem] border border-white/80 bg-white p-3 shadow-2xl shadow-orange-500/10 md:block">
-              <div className="h-24 rounded-2xl bg-[linear-gradient(135deg,#fb923c,#f97316)] p-3 text-white">
-                <Globe2 className="h-5 w-5" />
-                <p className="mt-6 text-xs font-bold">Salalah Tour</p>
-                <p className="text-[10px] text-orange-100">Group package</p>
-              </div>
-            </div>
-            <div className="relative mx-auto max-w-xl rotate-0 rounded-[2rem] border border-white/80 bg-white/90 p-3 shadow-2xl shadow-slate-900/12 backdrop-blur lg:rotate-[-2deg] lg:[transform-style:preserve-3d]">
-              <div className="rounded-[1.5rem] border border-slate-200 bg-slate-950 p-4 text-white shadow-inner">
-                <div className="mb-5 flex items-center justify-between">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-300">Command Center</p>
-                    <p className="mt-1 text-lg font-bold">Muscat Travel Agency</p>
-                  </div>
-                  <div className="rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-bold text-emerald-300">Live</div>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-3">
-                  {[
-                    ["Revenue", "12,480 OMR"],
-                    ["Bookings", "186"],
-                    ["Pending", "2,140 OMR"],
-                  ].map(([label, value]) => (
-                    <div key={label} className="rounded-2xl border border-white/10 bg-white/[0.06] p-4">
-                      <p className="text-xs text-slate-400">{label}</p>
-                      <p className="mt-2 text-lg font-extrabold">{value}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.06] p-4">
-                  <div className="mb-4 flex items-center justify-between">
-                    <p className="font-bold">Today&apos;s workflow</p>
-                    <Plane className="h-4 w-4 text-blue-300" />
-                  </div>
-                  {[
-                    ["Visa follow-up", "Al Khuwair family", "Due today"],
-                    ["Invoice sent", "Salalah group tour", "Pending"],
-                    ["Flight booking", "Dubai business trip", "Confirmed"],
-                  ].map(([title, customer, status]) => (
-                    <div key={title} className="flex items-center justify-between border-t border-white/10 py-3 first:border-t-0 first:pt-0 last:pb-0">
-                      <div>
-                        <p className="text-sm font-semibold">{title}</p>
-                        <p className="text-xs text-slate-400">{customer}</p>
-                      </div>
-                      <span className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-bold text-slate-200">{status}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-blue-400/20 bg-blue-400/10 p-4">
-                    <div className="mb-3 flex items-center justify-between">
-                      <p className="text-xs font-bold uppercase tracking-wider text-blue-200">Daily report</p>
-                      <span className="text-xs font-black text-emerald-300">+18%</span>
-                    </div>
-                    <div className="flex h-20 items-end gap-2">
-                      {[36, 52, 42, 68, 58, 78, 64].map((height, index) => (
-                        <span
-                          key={index}
-                          className="flex-1 rounded-t-lg bg-gradient-to-t from-blue-600 to-cyan-300"
-                          style={{ height: `${height}%` }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                  <div className="rounded-2xl border border-orange-400/20 bg-orange-400/10 p-4">
-                    <div className="mb-3 flex items-center justify-between">
-                      <p className="text-xs font-bold uppercase tracking-wider text-orange-200">Monthly report</p>
-                      <span className="text-xs font-black text-orange-200">40 OMR</span>
-                    </div>
-                    <div className="space-y-3">
-                      {[
-                        ["Bookings", "82%"],
-                        ["Invoices paid", "68%"],
-                        ["Agent target", "74%"],
-                      ].map(([label, width]) => (
-                        <div key={label}>
-                          <div className="mb-1 flex justify-between text-[11px] text-slate-300">
-                            <span>{label}</span>
-                            <span>{width}</span>
-                          </div>
-                          <div className="h-2 overflow-hidden rounded-full bg-white/10">
-                            <div className="h-full rounded-full bg-gradient-to-r from-orange-400 to-amber-200" style={{ width }} />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="absolute bottom-0 right-0 hidden w-64 rounded-[1.75rem] border border-white/80 bg-white/95 p-4 shadow-2xl shadow-slate-900/10 lg:block">
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-slate-400">Agency snapshot</p>
-              <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-                {[
-                  ["24", "Trips"],
-                  ["11", "Visa"],
-                  ["9", "Hotels"],
-                ].map(([value, label]) => (
-                  <div key={label} className="rounded-2xl bg-slate-50 p-3">
-                    <p className="text-lg font-black text-slate-950">{value}</p>
-                    <p className="text-[10px] font-bold text-slate-500">{label}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="features" className="mx-auto max-w-7xl px-5 py-20 sm:px-6 lg:px-8">
-        <div className="max-w-3xl">
-          <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#2563EB]">Features</p>
-          <h2 className="mt-3 text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
-            Everything your agency needs to operate with confidence.
-          </h2>
-          <p className="mt-4 text-lg leading-8 text-slate-600">
-            TravelDesk Pro brings daily operations, accounting visibility, and team workflows into one modern SaaS workspace.
-          </p>
-        </div>
-
-        <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => (
-            <div key={feature.title} className="group rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/5">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-[#2563EB] transition group-hover:bg-[#2563EB] group-hover:text-white">
-                <feature.icon className="h-5 w-5" />
-              </div>
-              <h3 className="mt-5 text-lg font-extrabold text-slate-950">{feature.title}</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">{feature.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="bg-slate-950 py-20 text-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-6 lg:grid-cols-[0.85fr_1fr] lg:px-8">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.24em] text-orange-300">Why agencies choose it</p>
-            <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">Built for real travel agency workflows.</h2>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {[
-              ["One workspace", "Replace disconnected files with a shared cloud system."],
-              ["Secure operations", "Keep agency data protected behind authenticated workspaces."],
-              ["Faster invoicing", "Create, track, and share customer-ready invoices quickly."],
-              ["Better decisions", "See profit, pending payments, and team performance clearly."],
-            ].map(([title, description]) => (
-              <div key={title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.06] p-5">
-                <ShieldCheck className="mb-4 h-5 w-5 text-blue-300" />
-                <h3 className="font-extrabold">{title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-300">{description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="pricing" className="mx-auto max-w-7xl px-5 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#2563EB]">Pricing</p>
-          <h2 className="mt-3 text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">Simple plans for growing agencies.</h2>
-          <p className="mt-4 text-lg text-slate-600">Start small, then upgrade as your team and booking volume grow.</p>
-        </div>
-
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
-          {pricing.map((plan) => (
-            <div
-              key={plan.name}
-              className={`relative rounded-[2rem] border p-7 shadow-sm ${
-                plan.featured
-                  ? "border-[#2563EB] bg-slate-950 text-white shadow-2xl shadow-blue-600/20"
-                  : "border-slate-200 bg-white text-slate-950"
-              }`}
-            >
-              {plan.featured && (
-                <div className="absolute right-6 top-6 rounded-full bg-[#F97316] px-3 py-1 text-xs font-black uppercase tracking-wider text-white">
-                  Recommended
-                </div>
-              )}
-              <h3 className="text-xl font-extrabold">{plan.name}</h3>
-              <p className={`mt-2 text-sm ${plan.featured ? "text-slate-300" : "text-slate-600"}`}>{plan.description}</p>
-              <p className="mt-6 text-4xl font-black">
-                {plan.price}
-                <span className={`text-sm font-semibold ${plan.featured ? "text-slate-400" : "text-slate-500"}`}> / month</span>
-              </p>
-              <ul className="mt-7 space-y-3">
-                {plan.features.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm font-medium">
-                    <Check className={`mt-0.5 h-4 w-4 ${plan.featured ? "text-emerald-300" : "text-emerald-500"}`} />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/signup"
-                className={`mt-8 inline-flex w-full items-center justify-center rounded-2xl px-5 py-3.5 text-sm font-bold transition ${
-                  plan.featured
-                    ? "bg-white text-slate-950 hover:bg-slate-100"
-                    : "bg-[#2563EB] text-white hover:bg-blue-700"
-                }`}
-              >
-                Start Free Trial
-              </Link>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section id="faq" className="mx-auto max-w-4xl px-5 pb-20 sm:px-6 lg:px-8">
-        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <h2 className="text-3xl font-black tracking-tight text-slate-950">FAQ</h2>
-          <div className="mt-6 divide-y divide-slate-200">
-            {faqs.map((faq) => (
-              <div key={faq.question} className="py-5">
-                <h3 className="font-extrabold text-slate-950">{faq.question}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="px-5 pb-10 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-[2rem] bg-[#2563EB] px-6 py-10 text-center text-white shadow-2xl shadow-blue-600/20">
-          <h2 className="text-3xl font-black tracking-tight sm:text-4xl">Ready to modernize your travel agency?</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-blue-100">Launch a secure cloud workspace for bookings, customers, invoices, agents, and reports.</p>
-          <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link href="/signup" className="rounded-2xl bg-white px-6 py-3.5 text-sm font-bold text-slate-950 transition hover:bg-blue-50">
-              Start Free Trial
-            </Link>
-            <Link href="/demo" className="rounded-2xl border border-white/30 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-white/10">
-              Try Interactive Demo
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <footer id="contact" className="relative overflow-hidden bg-slate-950 px-5 py-14 text-white sm:px-6 lg:px-8">
-        <div className="absolute inset-0 opacity-20 [background-image:radial-gradient(circle_at_20%_20%,#2563eb,transparent_28%),radial-gradient(circle_at_80%_0%,#f97316,transparent_24%)]" />
-        <div className="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_0.9fr]">
-          <div>
-            <Link href="/" className="inline-flex items-center gap-3" aria-label="TravelDesk Pro home">
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white shadow-sm">
-                <img src="/images/icon traveldesk.png" alt="" className="h-8 w-8 object-contain" />
-              </span>
-              <span className="text-xl font-black tracking-tight">
-                TravelDesk<span className="text-[#F97316]">Pro</span>
-              </span>
-            </Link>
-            <p className="mt-5 max-w-xl text-lg leading-8 text-slate-300">
-              The modern operating system for travel agencies in Oman, built for bookings, customers, invoices, agents, and reporting.
-            </p>
-
-            <div className="mt-8 grid gap-3 sm:grid-cols-2">
-              <a href="mailto:admin@traveldeskpro.app" className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.05] p-4 text-sm font-semibold text-slate-200 transition hover:bg-white/[0.08]">
-                <Mail className="h-5 w-5 text-blue-300" />
-                admin@traveldeskpro.app
-              </a>
-              <a href="tel:+96875135022" className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.05] p-4 text-sm font-semibold text-slate-200 transition hover:bg-white/[0.08]">
-                <Phone className="h-5 w-5 text-blue-300" />
-                +968-75135022
-              </a>
-              <a href={whatsappHref} target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-4 text-sm font-semibold text-emerald-100 transition hover:bg-emerald-400/15">
-                <MessageCircle className="h-5 w-5 text-emerald-300" />
-                WhatsApp +968-75135022
-              </a>
-              <a href="https://www.traveldeskpro.app" target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.05] p-4 text-sm font-semibold text-slate-200 transition hover:bg-white/[0.08]">
-                <ExternalLink className="h-5 w-5 text-blue-300" />
-                www.traveldeskpro.app
-              </a>
-            </div>
-
-            <div className="mt-8 flex flex-wrap gap-5 text-sm font-semibold text-slate-400">
-              <a href="#features" className="hover:text-white">Features</a>
-              <a href="#pricing" className="hover:text-white">Pricing</a>
-              <a href="#faq" className="hover:text-white">FAQ</a>
-              <Link href="/login" className="hover:text-white">Login</Link>
-              <Link href="/demo" className="hover:text-white">Interactive demo</Link>
-            </div>
-          </div>
-
-          <div className="lg:justify-self-end">
-            <DemoRequestForm />
-          </div>
-        </div>
-        <div className="relative mx-auto mt-10 flex max-w-7xl flex-col gap-4 border-t border-white/10 pt-6 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} TravelDesk Pro. All rights reserved.</p>
-          <a
-            href={whatsappHref}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-3 font-black text-slate-950 shadow-xl shadow-emerald-500/20 transition hover:-translate-y-0.5 hover:bg-emerald-400"
-          >
-            <MessageCircle className="h-5 w-5" />
-            WhatsApp us
-          </a>
-        </div>
-      </footer>
-    </main>
-  );
+function Logo({ light = false }: { light?: boolean }) {
+  return <Link href="/" className="td-logo" aria-label="TravelDesk Pro home"><span className={`td-logo-mark ${light ? "td-logo-mark-light" : ""}`}><img src="/images/icon traveldesk.png" alt="" /></span><span className={light ? "text-white" : "text-slate-950"}>TravelDesk<span className="text-orange-500">Pro</span></span></Link>;
 }
+
+function GlassCard({ children, className = "", depth = "", style }: { children: ReactNode; className?: string; depth?: string; style?: CSSProperties }) {
+  return <div className={`td-glass ${depth} ${className}`} style={style}>{children}</div>;
+}
+
+function SectionHeading({ eyebrow, title, copy, light = false }: { eyebrow: string; title: ReactNode; copy: string; light?: boolean }) {
+  return <div className="max-w-2xl"><p className={`td-eyebrow ${light ? "text-blue-300" : "text-blue-700"}`}>{eyebrow}</p><h2 className={`mt-4 text-4xl font-semibold leading-[1.06] tracking-[-0.045em] sm:text-6xl ${light ? "text-white" : "text-slate-950"}`}>{title}</h2><p className={`mt-5 max-w-xl text-base leading-7 ${light ? "text-slate-300" : "text-slate-600"}`}>{copy}</p></div>;
+}
+
+function BrowserBar() {
+  return <div className="td-browser-bar"><span /><span /><span /><div className="td-address-bar">traveldeskpro.app / command-center</div></div>;
+}
+
+function MiniSidebar() {
+  return <aside className="td-mini-sidebar"><div className="flex items-center gap-2 text-[9px] font-bold text-white"><span className="flex h-5 w-5 items-center justify-center rounded bg-blue-600"><Plane className="h-3 w-3" /></span> TravelDesk</div><div className="mt-7 space-y-1 text-[9px] text-slate-400">{["Command center", "Bookings", "Customers", "Invoices", "Reports", "Calendar"].map((item, index) => <div key={item} className={`rounded px-2 py-2 ${index === 0 ? "bg-blue-600/20 text-blue-200" : ""}`}>{item}</div>)}</div></aside>;
+}
+
+function DashboardPreview({ compact = false }: { compact?: boolean }) {
+  return <div className={`td-product-frame ${compact ? "td-product-frame-compact" : ""}`}><BrowserBar /><div className="flex bg-[#edf2f7]"><MiniSidebar /><div className="min-w-0 flex-1 p-4 sm:p-6"><div className="flex items-start justify-between"><div><p className="text-[9px] font-bold uppercase tracking-[0.18em] text-blue-600">Command center</p><h3 className="mt-1 text-lg font-bold text-slate-900">Good morning, Aisha</h3><p className="text-[10px] text-slate-500">Muscat Horizons Travel</p></div><span className="hidden rounded border border-slate-200 bg-white px-2 py-1 text-[9px] text-slate-500 sm:block">This month⌄</span></div><div className="mt-5 grid grid-cols-2 gap-2 lg:grid-cols-4">{[["Total bookings", "248", Ticket, "text-blue-600"], ["Revenue", "12,450 OMR", CircleDollarSign, "text-emerald-600"], ["Customers", "166", Users, "text-orange-500"], ["Pending", "3,200 OMR", Receipt, "text-amber-600"]].map(([label, value, Icon, color]) => { const MetricIcon = Icon as typeof Ticket; return <div key={label as string} className="rounded-md border border-slate-200 bg-white p-3"><MetricIcon className={`h-4 w-4 ${color}`} /><p className="mt-3 text-[9px] text-slate-500">{label as string}</p><p className="mt-1 text-sm font-bold text-slate-900">{value as string}</p></div>; })}</div><div className="mt-3 grid gap-3 lg:grid-cols-[1.35fr_0.85fr]"><div className="rounded-md border border-slate-200 bg-white p-4"><div className="flex justify-between"><p className="text-xs font-semibold text-slate-900">Revenue overview</p><TrendingUp className="h-4 w-4 text-emerald-600" /></div><div className="mt-6 flex h-28 items-end gap-2 border-b border-l border-slate-200 px-3">{[32, 45, 39, 58, 51, 72, 64, 86, 74, 94].map((height, index) => <span key={index} className="flex-1 rounded-t-sm bg-blue-500/80" style={{ height: `${height}%` }} />)}</div><div className="mt-2 flex justify-between text-[9px] text-slate-400"><span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span></div></div><div className="rounded-md border border-slate-200 bg-white p-4"><p className="text-xs font-semibold text-slate-900">Upcoming departures</p><div className="mt-3 space-y-3">{[["MCT → JED", "24 Oct · 08:20"], ["MCT → BKK", "12 Nov · 14:00"], ["Salalah tour", "18 Nov · 09:30"]].map(([route, date]) => <div key={route} className="flex items-center gap-2 border-t border-slate-100 pt-2 first:border-0 first:pt-0"><span className="flex h-6 w-6 items-center justify-center rounded bg-blue-50 text-blue-600"><Plane className="h-3 w-3" /></span><div><p className="text-[10px] font-semibold text-slate-800">{route}</p><p className="text-[9px] text-slate-500">{date}</p></div></div>)}</div></div></div><div className="mt-3 rounded-md border border-slate-200 bg-white p-4"><div className="flex justify-between"><p className="text-xs font-semibold text-slate-900">Recent bookings</p><span className="text-[9px] font-semibold text-blue-600">View all</span></div><div className="mt-3 grid grid-cols-4 gap-2 text-[9px] text-slate-500"><span>Customer</span><span>Route</span><span>Travel date</span><span>Status</span>{[["Ahmed Family", "MCT → JED", "24 Oct", "Confirmed"], ["Khalid Trading", "MCT → DXB", "01 Nov", "Pending"]].map(([customer, route, date, status]) => <div key={customer} className="col-span-4 grid grid-cols-4 border-t border-slate-100 py-2 text-[10px]"><span className="font-medium text-slate-800">{customer}</span><span>{route}</span><span>{date}</span><span className={status === "Confirmed" ? "text-emerald-600" : "text-amber-600"}>{status}</span></div>)}</div></div></div></div></div>;
+}
+
+function GlobeRoutes() {
+  return <div className="td-globe" aria-hidden="true"><div className="td-globe-latitude" /><div className="td-globe-route route-one" /><div className="td-globe-route route-two" /><span className="route-label label-mct">MCT</span><span className="route-label label-dxb">DXB</span><span className="route-label label-jed">JED</span><span className="route-label label-bkk">BKK</span></div>;
+}
+
+function BookingPreview() {
+  return <div className="td-product-frame"><BrowserBar /><div className="bg-[#edf2f7] p-4 sm:p-7"><div className="flex items-center justify-between"><div><p className="td-eyebrow text-blue-700">Smart bookings</p><h3 className="mt-2 text-xl font-semibold text-slate-900">Book flights, hotels and more</h3></div><div className="flex gap-1"><span className="rounded bg-blue-600 px-3 py-2 text-[10px] font-bold text-white">Flights</span><span className="rounded border border-slate-200 bg-white px-3 py-2 text-[10px] font-bold text-slate-500">Hotels</span><span className="hidden rounded border border-slate-200 bg-white px-3 py-2 text-[10px] font-bold text-slate-500 sm:inline">Visa</span></div></div><div className="mt-5 grid gap-2 sm:grid-cols-4">{[["From", "Muscat (MCT)"], ["To", "Jeddah (JED)"], ["Departure", "24 Oct 2026"], ["Passengers", "2 Adults, 1 Child"]].map(([label, value]) => <div key={label} className="rounded border border-slate-200 bg-white p-3"><p className="text-[9px] text-slate-400">{label}</p><p className="mt-1 text-xs font-semibold text-slate-800">{value}</p></div>)}</div><div className="mt-5 space-y-2">{[["Oman Air", "MCT 08:20 → JED 11:10", "OMR 186", "Best value"], ["Qatar Airways", "MCT 10:15 → JED 15:40", "OMR 214", "Recommended"], ["Emirates", "MCT 14:30 → JED 20:15", "OMR 248", "Flexible"]].map(([airline, route, price, tag]) => <div key={airline} className="flex items-center justify-between rounded border border-slate-200 bg-white p-3"><div className="flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded bg-blue-50 text-blue-600"><Plane className="h-4 w-4" /></span><div><p className="text-xs font-bold text-slate-900">{airline}</p><p className="text-[10px] text-slate-500">{route}</p></div></div><div className="text-right"><p className="text-xs font-bold text-slate-900">{price}</p><p className="text-[9px] text-emerald-600">{tag}</p></div></div>)}</div></div></div>;
+}
+
+function InvoicePreview() {
+  return <div className="td-invoice-sheet"><div className="flex justify-between border-b border-slate-200 pb-5"><div><div className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded bg-blue-600"><Plane className="h-4 w-4 text-white" /></span><span className="text-sm font-bold text-slate-900">Muscat Horizons</span></div><p className="mt-2 text-[9px] leading-4 text-slate-500">Al Khuwair, Muscat, Oman<br />+968 9000 0000 · accounts@agency.om</p></div><div className="text-right"><p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">Invoice No.</p><p className="mt-1 text-sm font-bold text-slate-900">INV-0048</p><p className="mt-2 text-[9px] text-slate-500">Issued 06 Sep 2026<br />Due 06 Oct 2026</p></div></div><div className="py-5"><p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">Customer</p><p className="mt-1 text-xs font-bold text-slate-900">Ahmed Family</p><p className="text-[9px] text-slate-500">4 travelers · Oman</p></div><div className="overflow-hidden border border-slate-200"><div className="grid grid-cols-[1fr_40px_70px] bg-slate-50 p-2 text-[8px] font-bold uppercase text-slate-500"><span>Description</span><span>Qty</span><span className="text-right">Total</span></div>{[["Flight ticket · MCT-JED", "4", "OMR 720.00"], ["Service fee", "1", "OMR 25.00"]].map(([item, qty, total]) => <div key={item} className="grid grid-cols-[1fr_40px_70px] border-t border-slate-100 p-2 text-[9px] text-slate-700"><span>{item}</span><span>{qty}</span><span className="text-right">{total}</span></div>)}</div><div className="ml-auto mt-5 w-44 space-y-2 text-[10px]"><div className="flex justify-between text-slate-500"><span>Subtotal</span><span>OMR 745.00</span></div><div className="flex justify-between text-slate-500"><span>Tax 5%</span><span>OMR 37.25</span></div><div className="flex justify-between border-t border-slate-200 pt-2 text-sm font-bold text-slate-900"><span>Total</span><span>OMR 782.25</span></div></div><div className="mt-7 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200 pt-4"><span className="rounded bg-amber-50 px-2 py-1 text-[9px] font-bold text-amber-700">PENDING PAYMENT</span><span className="text-[9px] text-slate-400">PDF · PRINT · WHATSAPP</span></div></div>;
+}
+
+function CustomerPreview() {
+  return <div className="td-crm-stack"><GlassCard className="relative z-10 max-w-sm p-5" depth="td-depth-front"><div className="flex items-start justify-between"><div className="flex items-center gap-3"><span className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">AF</span><div><h3 className="text-sm font-bold text-slate-900">Ahmed Family</h3><p className="text-xs text-slate-500">4 travelers · Oman</p></div></div><MoreHorizontal className="h-4 w-4 text-slate-400" /></div><div className="mt-5 grid grid-cols-2 gap-2"><div className="rounded border border-slate-100 bg-white/70 p-3"><p className="text-[9px] text-slate-400">Bookings</p><p className="mt-1 text-lg font-bold text-slate-900">12</p></div><div className="rounded border border-slate-100 bg-white/70 p-3"><p className="text-[9px] text-slate-400">Payment history</p><p className="mt-1 text-lg font-bold text-emerald-600">Paid</p></div></div><div className="mt-5 space-y-2 border-t border-slate-200 pt-4 text-[10px] text-slate-600"><p><strong className="text-slate-900">Passport</strong> · OM-784920</p><p><strong className="text-slate-900">Phone</strong> · +968 9123 4567</p><p><strong className="text-slate-900">Email</strong> · family@example.com</p></div></GlassCard><GlassCard className="absolute -right-2 top-10 hidden w-48 p-4 sm:block" depth="td-depth-back"><p className="td-eyebrow text-orange-600">Upcoming trip</p><p className="mt-2 text-sm font-bold text-slate-900">MCT → JED</p><p className="mt-1 text-xs text-slate-500">24 Oct 2026 · 4 passengers</p><span className="mt-4 inline-flex rounded bg-emerald-50 px-2 py-1 text-[9px] font-bold text-emerald-700">Confirmed</span></GlassCard></div>;
+}
+
+function ReportPreview() {
+  return <GlassCard className="p-5 sm:p-7"><div className="flex items-center justify-between"><div><p className="td-eyebrow text-blue-700">Performance overview</p><h3 className="mt-2 text-xl font-semibold text-slate-900">Revenue and profit</h3></div><span className="rounded border border-slate-200 bg-white px-3 py-2 text-[10px] text-slate-500">Last 30 days⌄</span></div><div className="mt-8 flex h-48 items-end gap-2 border-b border-l border-slate-200 px-4">{[32, 45, 40, 58, 52, 74, 64, 82, 75, 92, 80, 96].map((height, index) => <div key={index} className="flex flex-1 items-end gap-1"><span className="w-1/2 rounded-t bg-blue-500" style={{ height: `${height}%` }} /><span className="w-1/2 rounded-t bg-orange-400" style={{ height: `${Math.max(height - 22, 14)}%` }} /></div>)}</div><div className="mt-4 grid grid-cols-4 gap-3 text-center"><div><p className="text-[9px] text-slate-400">Revenue</p><p className="mt-1 text-sm font-bold text-slate-900">OMR 12.4k</p></div><div><p className="text-[9px] text-slate-400">Bookings</p><p className="mt-1 text-sm font-bold text-slate-900">248</p></div><div><p className="text-[9px] text-slate-400">Profit</p><p className="mt-1 text-sm font-bold text-emerald-600">OMR 4.8k</p></div><div><p className="text-[9px] text-slate-400">Commission</p><p className="mt-1 text-sm font-bold text-slate-900">OMR 920</p></div></div></GlassCard>;
+}
+
+function WhatsAppPreview() {
+  return <div className="td-chat-window"><div className="flex items-center gap-3 border-b border-white/10 p-4"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500"><MessageCircle className="h-5 w-5 text-white" /></span><div><p className="text-sm font-bold text-white">Ahmed Family</p><p className="text-[10px] text-emerald-300">WhatsApp Web sharing</p></div></div><div className="space-y-3 p-5"><div className="ml-auto max-w-[85%] rounded-lg rounded-tr-sm bg-emerald-600 p-3 text-white"><p className="text-[10px] font-bold text-emerald-100">Booking confirmed ✓</p><p className="mt-2 text-xs leading-5">MCT → JED<br />24 Oct 2026<br />Invoice attached</p><p className="mt-2 text-[9px] text-emerald-100">09:42</p></div><div className="max-w-[85%] rounded-lg rounded-tl-sm bg-white/10 p-3 text-white"><p className="text-[10px] font-bold text-slate-300">Payment received ✓</p><p className="mt-2 text-xs leading-5">Thank you. Payment of OMR 850 received.</p></div></div></div>;
+}
+
+function App() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [scrollY, setScrollY] = useState(0);
+  const [pointer, setPointer] = useState({ x: 0, y: 0 });
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const updateMotion = () => {
+      const nextReduced = mediaQuery.matches;
+      setReducedMotion(nextReduced);
+
+      if (nextReduced) {
+        setPointer({ x: 0, y: 0 });
+        setScrollY(0);
+        return;
+      }
+
+      setScrollY(window.scrollY);
+    };
+
+    const updateScroll = () => setScrollY(window.scrollY);
+    const updatePointer = (event: MouseEvent) => {
+      const x = (event.clientX / window.innerWidth - 0.5) * 2;
+      const y = (event.clientY / window.innerHeight - 0.5) * 2;
+      setPointer({ x, y });
+    };
+
+    updateMotion();
+
+    if (mediaQuery.matches) {
+      return () => mediaQuery.removeEventListener("change", updateMotion);
+    }
+
+    mediaQuery.addEventListener("change", updateMotion);
+    window.addEventListener("scroll", updateScroll, { passive: true });
+    window.addEventListener("mousemove", updatePointer, { passive: true });
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateMotion);
+      window.removeEventListener("scroll", updateScroll);
+      window.removeEventListener("mousemove", updatePointer);
+    };
+  }, []);
+
+  const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+  const depth = reducedMotion ? { x: 0, y: 0 } : pointer;
+  const heroProgress = reducedMotion ? 0 : Math.min(Math.max(scrollY / 700, 0), 1);
+  const layer = (factor: number, rotateX = 0, rotateY = 0, scale = 1, rotateZ = 0): CSSProperties => {
+    const boundedX = clamp(depth.x * factor, -12, 12);
+    const boundedY = clamp(depth.y * factor - heroProgress * factor * 0.6, -15, 15);
+    return {
+      transform: `translate3d(${boundedX}px, ${boundedY}px, 0) rotateX(${rotateX - depth.y * 0.7}deg) rotateY(${rotateY + depth.x * 0.9}deg) rotateZ(${rotateZ}deg) scale(${scale})`,
+    };
+  };
+
+  return <main className="marketing-page min-h-screen overflow-x-hidden text-slate-950" style={{ "--hero-progress": heroProgress } as CSSProperties}>
+    <header className="td-nav"><div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8"><Logo /><nav className="hidden items-center gap-6 text-sm font-semibold text-slate-600 md:flex"><a href="#features">Features</a><a href="#solutions">Solutions</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><Link href="/login" className="ms-3">Login</Link><Link href="/demo" className="td-nav-dark">Try Interactive Demo</Link><Link href="/signup" className="td-nav-primary">Start Free Trial</Link></nav><button type="button" aria-label={mobileOpen ? "Close menu" : "Open menu"} onClick={() => setMobileOpen(!mobileOpen)} className="rounded-md p-2 text-slate-700 md:hidden">{mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button></div>{mobileOpen && <nav className="border-t border-slate-200 bg-white px-5 py-4 md:hidden"><div className="mx-auto flex max-w-7xl flex-col gap-1 text-sm font-semibold"><a href="#features" onClick={() => setMobileOpen(false)} className="px-2 py-3">Features</a><a href="#solutions" onClick={() => setMobileOpen(false)} className="px-2 py-3">Solutions</a><a href="#pricing" onClick={() => setMobileOpen(false)} className="px-2 py-3">Pricing</a><a href="#faq" onClick={() => setMobileOpen(false)} className="px-2 py-3">FAQ</a><Link href="/login" className="px-2 py-3">Login</Link><Link href="/demo" className="mt-2 rounded-md bg-slate-950 px-4 py-3 text-center text-white">Try Interactive Demo</Link><Link href="/signup" className="rounded-md bg-blue-600 px-4 py-3 text-center text-white">Start Free Trial</Link></div></nav>}</header>
+
+    <section className="td-hero"><div className="td-hero-grid" /><div className="td-airport-glow" /><div className="mx-auto grid min-h-[730px] max-w-7xl items-center gap-10 px-5 pb-20 pt-14 sm:px-6 lg:grid-cols-[0.76fr_1.24fr] lg:px-8 lg:pb-24 lg:pt-20"><div className="relative z-20"><p className="td-eyebrow text-blue-700">Travel agency operations, simplified</p><h1 className="td-hero-title">Run your entire<br />travel agency<br />from one <span>powerful workspace</span>.</h1><p className="mt-6 max-w-lg text-lg leading-8 text-slate-600">Manage customers, bookings, invoices, agents and daily operations — all from one intelligent platform.</p><div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/signup" className="td-cta-primary">Start Free Trial <ArrowRight className="h-4 w-4" /></Link><Link href="/demo" className="td-cta-secondary">Watch Demo <span className="td-play">▶</span></Link></div><div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[11px] font-medium text-slate-500"><span><Check className="mr-1 inline h-3.5 w-3.5 text-emerald-500" />No credit card required</span><span><Check className="mr-1 inline h-3.5 w-3.5 text-emerald-500" />Setup in minutes</span><span><Check className="mr-1 inline h-3.5 w-3.5 text-emerald-500" />Built for travel agencies</span></div></div><div className="td-hero-stage relative min-h-[540px] lg:min-h-[620px]"><div className="td-route-world" style={layer(5, 0, -4, 0.98)}><GlobeRoutes /></div><div className="td-hero-dashboard" style={layer(9, 15, -15, 0.98, 4)}><DashboardPreview /></div><GlassCard className="td-hero-float td-float-booking" style={layer(16, 2, -4, 0.98)}><p className="td-eyebrow text-blue-700">Booking confirmed</p><p className="mt-2 text-sm font-bold text-slate-900">MCT → JED</p><p className="text-[10px] text-slate-500">Confirmed · +1 passenger</p></GlassCard><GlassCard className="td-hero-float td-float-revenue" style={layer(20, -2, 5, 0.94)}><div className="flex items-center justify-between"><p className="td-eyebrow text-slate-500">Revenue</p><TrendingUp className="h-4 w-4 text-emerald-600" /></div><p className="mt-2 text-lg font-bold text-slate-900">12,480 OMR</p><p className="text-[10px] font-bold text-emerald-600">+18.4%</p></GlassCard><GlassCard className="td-hero-float td-float-payment" style={layer(24, 3, -3, 0.9)}><p className="td-eyebrow text-slate-500">Payment received</p><p className="mt-2 text-lg font-bold text-slate-900">2,450 OMR</p><span className="text-[10px] font-bold text-emerald-600">Paid</span></GlassCard><GlassCard className="td-hero-float td-float-customer" style={layer(18, -3, 4, 0.92)}><p className="td-eyebrow text-orange-600">New customer</p><p className="mt-2 text-lg font-bold text-slate-900">+24</p><p className="text-[10px] text-slate-500">This month</p></GlassCard></div></div></section>
+
+    <section id="features" className="td-feature-rail"><div className="mx-auto grid max-w-7xl grid-cols-2 gap-2 px-5 py-3 sm:grid-cols-4 lg:grid-cols-8 lg:px-8">{[[Plane, "Flight bookings"], [Globe2, "Hotel reservations"], [FileText, "Visa management"], [Users, "Customer CRM"], [Receipt, "Invoices & accounting"], [BarChart3, "Reports & analytics"], [CalendarCheck, "Calendar & tasks"], [MessageCircle, "WhatsApp sharing"]].map(([Icon, label]) => { const FeatureIcon = Icon as typeof Plane; return <div key={label as string} className="td-feature-tile"><FeatureIcon className="h-4 w-4 text-blue-600" /><span>{label as string}</span></div>; })}</div></section>
+
+    <section className="td-trust-band"><div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-5 px-5 py-8 sm:px-6 lg:px-8"><span className="td-eyebrow text-slate-400">Built around real agency workflows</span>{["Oman Air", "Emirates", "Qatar Airways", "Saudia", "SalamAir", "Turkish Airlines", "flydubai"].map((name) => <span key={name} className="td-airline-wordmark">{name}</span>)}</div></section>
+
+    <section id="solutions" className="td-dark-section"><div className="mx-auto grid max-w-7xl items-center gap-14 px-5 py-24 sm:px-6 lg:grid-cols-[0.72fr_1.28fr] lg:px-8 lg:py-32"><div><SectionHeading light eyebrow="The command center" title={<>Everything you need<br />to grow your travel business.</>} copy="Bring bookings, customers, payments, and daily activity into one view your team can actually use." /><Link href="/demo" className="td-cta-light mt-8">Explore the live workspace <ArrowRight className="h-4 w-4" /></Link></div><div className="td-showcase-stage"><div className="td-showcase-dashboard"><DashboardPreview compact /></div><GlassCard className="td-profit-card" depth="td-depth-front"><p className="td-eyebrow text-slate-500">Total profit</p><p className="mt-2 text-2xl font-bold text-slate-900">OMR 4,850</p><p className="mt-1 text-[10px] font-bold text-emerald-600">This month · +12.8%</p></GlassCard></div></div></section>
+
+    <section className="td-light-section"><div className="mx-auto grid max-w-7xl items-center gap-14 px-5 py-24 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8 lg:py-32"><div><SectionHeading eyebrow="Smart bookings" title={<>Book flights, hotels<br />and more — effortlessly.</>} copy="Search, organize, and follow the full journey from customer request to confirmed booking." /><div className="mt-8 space-y-3 text-sm font-semibold text-slate-700"><p><Check className="mr-2 inline h-4 w-4 text-emerald-600" />Flight, hotel, visa, and tour services</p><p><Check className="mr-2 inline h-4 w-4 text-emerald-600" />Passenger and itinerary details</p><p><Check className="mr-2 inline h-4 w-4 text-emerald-600" />Payment and commission visibility</p></div></div><div className="td-showcase-stage"><div className="td-showcase-booking"><BookingPreview /></div><GlassCard className="td-route-chip" depth="td-depth-front"><Plane className="h-4 w-4 text-blue-600" /><span>MCT → JED · 24 OCT</span></GlassCard></div></div></section>
+
+    <section className="td-invoice-section"><div className="mx-auto grid max-w-7xl items-center gap-14 px-5 py-24 sm:px-6 lg:grid-cols-[0.88fr_1.12fr] lg:px-8 lg:py-32"><div className="td-invoice-stage"><div className="td-invoice-preview"><InvoicePreview /></div><div className="td-invoice-actions"><span>Download PDF</span><span>Send via WhatsApp</span><span>Send via Email</span></div></div><div><SectionHeading eyebrow="Professional invoices" title={<>Create and send beautiful<br />invoices in seconds.</>} copy="Put your agency name, customer details, travel services, totals, and payment status into a document customers can trust." /><div className="mt-8 flex flex-wrap gap-2 text-xs font-bold"><span className="td-action-pill">PDF</span><span className="td-action-pill">Print</span><span className="td-action-pill td-action-pill-green">WhatsApp sharing</span></div></div></div></section>
+
+    <section className="td-light-section"><div className="mx-auto grid max-w-7xl items-center gap-14 px-5 py-24 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-32"><div><SectionHeading eyebrow="Customer CRM" title={<>Every customer.<br />Every trip. One profile.</>} copy="Give your team the context to serve customers faster, with contact information, passport details, booking history, notes, and payment history together." /><Link href="/demo/customers" className="td-cta-secondary mt-8">View customer workspace <ArrowRight className="h-4 w-4" /></Link></div><CustomerPreview /></div></section>
+
+    <section className="td-report-section"><div className="mx-auto grid max-w-7xl items-center gap-14 px-5 py-24 sm:px-6 lg:grid-cols-[0.7fr_1.3fr] lg:px-8 lg:py-32"><div><SectionHeading light eyebrow="Reports and visibility" title={<>See where your agency<br />is making money.</>} copy="Understand revenue, bookings, profit, commissions, and outstanding invoices without rebuilding the numbers by hand." /><div className="mt-8 grid grid-cols-2 gap-3 text-sm text-slate-300"><span><BarChart3 className="mr-2 inline h-4 w-4 text-blue-300" />Revenue and costs</span><span><TrendingUp className="mr-2 inline h-4 w-4 text-blue-300" />Profit visibility</span><span><UserCheck className="mr-2 inline h-4 w-4 text-blue-300" />Staff performance</span><span><Receipt className="mr-2 inline h-4 w-4 text-blue-300" />Outstanding invoices</span></div></div><ReportPreview /></div></section>
+
+    <section className="td-whatsapp-section"><div className="mx-auto grid max-w-7xl items-center gap-14 px-5 py-24 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-32"><div><SectionHeading eyebrow="WhatsApp sharing" title={<>Keep customers informed<br />without leaving your workflow.</>} copy="Prepare booking confirmations, invoice summaries, and payment reminders from the records your team already manages." /><div className="mt-8 border-l-2 border-emerald-500 pl-4 text-xs leading-5 text-slate-500"><strong className="text-slate-800">WhatsApp Web sharing is available today.</strong> WhatsApp Business API integration remains a future integration, not an active product claim.</div></div><WhatsAppPreview /></div></section>
+
+    <section id="pricing" className="td-pricing-section"><div className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8 lg:py-32"><SectionHeading eyebrow="Simple pricing" title={<>Start with the team<br />you have today.</>} copy="Choose the workspace that fits your agency, then grow into the next stage." /><div className="mt-14 grid gap-4 lg:grid-cols-3">{pricing.map((plan) => <div key={plan.name} className={`td-plan ${plan.featured ? "td-plan-featured" : ""}`}>{plan.featured && <span className="td-plan-badge">Recommended</span>}<p className="td-eyebrow opacity-60">{plan.name}</p><p className="mt-6 text-4xl font-semibold">{plan.price}<span className="text-sm font-medium opacity-60"> / month</span></p><p className="mt-3 text-sm opacity-70">{plan.description}</p><ul className="mt-8 space-y-3">{plan.features.map((item) => <li key={item} className="flex gap-2 text-sm"><Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />{item}</li>)}</ul><Link href="/signup" className={`mt-9 inline-flex w-full justify-center rounded-md px-4 py-3 text-sm font-bold ${plan.featured ? "bg-white text-slate-950" : "bg-blue-600 text-white"}`}>Start Free Trial</Link></div>)}</div></div></section>
+
+    <section id="faq" className="mx-auto max-w-4xl px-5 py-24 sm:px-6 lg:px-8 lg:py-32"><SectionHeading eyebrow="Questions" title="A clearer way to run travel operations." copy="A few answers before you step into the workspace." /><div className="mt-10 divide-y divide-slate-200 border-y border-slate-200">{faqs.map(([question, answer], index) => <div key={question}><button type="button" onClick={() => setOpenFaq(openFaq === index ? null : index)} aria-expanded={openFaq === index} className="flex w-full items-center justify-between gap-4 py-5 text-start text-sm font-bold text-slate-900"><span>{question}</span><ChevronDown className={`h-4 w-4 shrink-0 transition-transform ${openFaq === index ? "rotate-180" : ""}`} /></button>{openFaq === index && <p className="max-w-2xl pb-5 text-sm leading-6 text-slate-600">{answer}</p>}</div>)}</div></section>
+
+    <section className="td-final-cta"><div className="td-final-orbit" /><div className="relative mx-auto max-w-5xl px-5 py-24 text-center sm:px-6 lg:py-32"><p className="td-eyebrow text-blue-200">The next chapter of your agency</p><h2 className="mt-5 text-4xl font-semibold leading-tight tracking-[-0.045em] text-white sm:text-6xl">Your entire travel agency.<br />One powerful workspace.</h2><p className="mx-auto mt-5 max-w-xl text-base leading-7 text-slate-300">Bring customers, bookings, invoices, and daily operations together with TravelDesk Pro.</p><div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row"><Link href="/signup" className="td-cta-light">Start Free Trial <ArrowRight className="h-4 w-4" /></Link><Link href="/demo" className="td-cta-dark-outline">Explore Interactive Demo</Link></div></div></section>
+
+    <footer id="contact" className="bg-slate-950 px-5 py-16 text-white sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.75fr]"><div><Logo light /><p className="mt-6 max-w-lg text-sm leading-7 text-slate-400">Professional travel-agency operations for customers, bookings, invoices, agents, and reporting in one workspace.</p><div className="mt-8 grid gap-3 text-sm text-slate-300 sm:grid-cols-2"><a href="mailto:admin@traveldeskpro.app" className="flex items-center gap-2 hover:text-white"><Mail className="h-4 w-4 text-blue-300" /> admin@traveldeskpro.app</a><a href="tel:+96875135022" className="flex items-center gap-2 hover:text-white"><Phone className="h-4 w-4 text-blue-300" /> +968-75135022</a><a href={whatsappHref} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-white"><MessageCircle className="h-4 w-4 text-emerald-300" /> WhatsApp +968-75135022</a></div><nav className="mt-8 flex flex-wrap gap-5 text-sm font-semibold text-slate-400"><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><Link href="/login">Login</Link><Link href="/demo">Interactive demo</Link></nav></div><DemoRequestForm /></div><div className="mx-auto mt-12 flex max-w-7xl flex-col gap-3 border-t border-white/10 pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between"><span>© {new Date().getFullYear()} TravelDesk Pro. All rights reserved.</span><span>Built for travel agencies in Oman and the GCC.</span></div></footer>
+  </main>;
+}
+
+export default App;
