@@ -79,12 +79,13 @@
 
   body {
     @apply bg-soft-bg text-foreground antialiased;
+    font-family: "Inter", "Noto Sans Arabic", "Segoe UI", sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
     min-width: 320px;
   }
 
   html[dir="rtl"] body {
-    font-family: "Geist", "Noto Sans Arabic", system-ui, sans-serif;
+    font-family: "Noto Sans Arabic", "Inter", "Segoe UI", sans-serif;
   }
 }
 
@@ -201,7 +202,7 @@
 
 /* Marketing visual foundation: depth stays limited to the public hero and previews. */
 .marketing-page {
-  font-family: "Geist", "Noto Sans Arabic", system-ui, sans-serif;
+  font-family: "Inter", "Geist", "Noto Sans Arabic", system-ui, sans-serif;
   background:
     radial-gradient(circle at 72% 7%, rgba(37, 99, 235, 0.12), transparent 28rem),
     radial-gradient(circle at 12% 18%, rgba(249, 115, 22, 0.07), transparent 24rem),
@@ -340,24 +341,27 @@
 .td-hero { position: relative; isolation: isolate; overflow: hidden; border-bottom: 1px solid #e2e8f0; background: linear-gradient(130deg, #ffffff 0%, #f7faff 52%, #eaf1fb 100%); }
 .td-hero-grid { position: absolute; inset: 0; opacity: 0.55; background-image: linear-gradient(rgba(37,99,235,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.06) 1px, transparent 1px); background-size: 54px 54px; mask-image: linear-gradient(to bottom, black, transparent 85%); }
 .td-airport-glow { position: absolute; right: 2%; top: 15%; height: 34rem; width: 34rem; border-radius: 50%; background: radial-gradient(circle, rgba(37,99,235,0.16), rgba(37,99,235,0.02) 58%, transparent 72%); filter: blur(4px); }
-.td-hero-title { max-width: 42rem; color: #0f172a; font-size: clamp(3rem, 6vw, 5.35rem); font-weight: 650; letter-spacing: -0.065em; line-height: 0.98; }
-.td-hero-title span { color: #2563eb; }
-.td-hero-stage { perspective: 1450px; transform-style: preserve-3d; }
-.td-hero-dashboard { position: absolute; left: 0; top: 8%; width: min(100%, 680px); transform-style: preserve-3d; transition: transform 100ms linear; will-change: transform; }
+.td-hero-title { max-width: 42rem; color: #0f172a; font-family: "Inter", "Noto Sans Arabic", "Segoe UI", sans-serif; font-size: clamp(3.1rem, 5vw, 5.35rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+.td-hero-title span { background: linear-gradient(110deg, #312e81 0%, #2563eb 52%, #0ea5e9 100%); background-clip: text; -webkit-background-clip: text; color: transparent; }
+.td-hero-stage { position: relative; width: 100%; height: clamp(28rem, 44vw, 38rem); max-height: 38rem; overflow: hidden; isolation: isolate; perspective: 1000px; transform-style: preserve-3d; }
+.td-route-world { position: absolute; right: 0; bottom: 2%; z-index: 1; width: min(17rem, 42%); opacity: 0.9; pointer-events: none; }
+.td-route-world .td-globe { width: 100%; height: 16rem; }
+.td-hero-dashboard { position: absolute; right: clamp(0.5rem, 2vw, 2rem); top: 7%; z-index: 3; width: min(100%, 680px); max-width: 680px; transform-style: preserve-3d; transition: transform 700ms ease-out; will-change: transform; }
 .td-hero-dashboard::before { position: absolute; inset: -1px; z-index: 2; border: 1px solid rgba(255,255,255,0.8); border-radius: 1rem; background: linear-gradient(120deg, rgba(255,255,255,0.34), transparent 32%, transparent 70%, rgba(125,211,252,0.12)); content: ""; pointer-events: none; mix-blend-mode: screen; }
-.td-product-frame { overflow: hidden; border: 1px solid rgba(255,255,255,0.8); border-radius: 0.95rem; background: rgba(255,255,255,0.78); box-shadow: 0 42px 100px rgba(15,23,42,0.23), 18px 28px 60px rgba(37,99,235,0.09), 0 0 0 10px rgba(255,255,255,0.2), inset 0 1px 0 rgba(255,255,255,0.95); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.td-product-frame { box-sizing: border-box; overflow: hidden; border: 1px solid rgba(255,255,255,0.8); border-radius: 0.95rem; background: rgba(255,255,255,0.78); box-shadow: 0 42px 100px rgba(15,23,42,0.14), 0 20px 50px -12px rgba(0,0,0,0.05), 0 0 0 10px rgba(255,255,255,0.2), inset 0 1px 0 rgba(255,255,255,0.95); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.td-hero-dashboard .td-product-frame { width: 100%; aspect-ratio: 1.42 / 1; }
 .td-browser-bar { display: flex; height: 2.25rem; align-items: center; gap: 0.35rem; border-bottom: 1px solid #e2e8f0; background: rgba(248,250,252,0.9); padding: 0 0.85rem; }
 .td-browser-bar > span { height: 0.45rem; width: 0.45rem; border-radius: 999px; background: #cbd5e1; }
 .td-address-bar { margin: auto; display: none; width: 13rem; border: 1px solid #e2e8f0; border-radius: 0.25rem; background: white; padding: 0.2rem 0.5rem; color: #94a3b8; font-size: 0.55rem; text-align: center; }
 .td-mini-sidebar { width: 7.5rem; flex-shrink: 0; background: #0f172a; padding: 0.9rem; }
-.td-glass { border: 1px solid rgba(255,255,255,0.78); border-radius: 0.8rem; background: linear-gradient(145deg, rgba(255,255,255,0.78), rgba(238,246,255,0.52)); box-shadow: 0 26px 60px rgba(15,23,42,0.17), 10px 16px 30px rgba(37,99,235,0.08), inset 0 1px 0 rgba(255,255,255,0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.td-glass { box-sizing: border-box; border: 1px solid rgba(255,255,255,0.2); border-radius: 0.8rem; background: rgba(255,255,255,0.8); box-shadow: 0 20px 50px -12px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
 .td-depth-front { transform-style: preserve-3d; }
 .td-depth-back { opacity: 0.82; transform: translateZ(-40px) rotate(4deg); }
-.td-hero-float { position: absolute; z-index: 4; width: 10.5rem; padding: 0.85rem; transition: transform 100ms linear; will-change: transform; }
-.td-float-booking { left: -1.2rem; top: 10%; }
-.td-float-revenue { right: -1rem; top: 6%; }
-.td-float-payment { right: 3%; bottom: 12%; }
-.td-float-customer { left: 4%; bottom: 5%; }
+.td-hero-float { position: absolute; z-index: 4; width: min(10.5rem, 26vw); max-width: 10.5rem; min-width: 7.25rem; padding: 0.85rem; box-sizing: border-box; overflow: hidden; transition: transform 700ms ease-out; will-change: transform; }
+.td-float-booking { left: 2%; top: 10%; }
+.td-float-revenue { right: 2%; top: 6%; }
+.td-float-payment { right: 5%; bottom: 10%; }
+.td-float-customer { left: 6%; bottom: 5%; }
 .td-feature-rail { position: relative; z-index: 5; margin-top: -1px; border-bottom: 1px solid #dbe4ef; background: rgba(255,255,255,0.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
 .td-feature-tile { display: flex; min-height: 3.7rem; align-items: center; gap: 0.55rem; border: 1px solid rgba(226,232,240,0.8); border-radius: 0.55rem; background: rgba(255,255,255,0.62); padding: 0.65rem; color: #475569; font-size: 0.65rem; font-weight: 700; line-height: 1.25; transition: transform 180ms ease, box-shadow 180ms ease; }
 .td-feature-tile:hover { transform: translateY(-3px) rotateX(2deg); box-shadow: 0 12px 28px rgba(15,23,42,0.1); }
@@ -407,8 +411,8 @@
 .td-cta-light { background: #fff; color: #0f172a; }.td-cta-light:hover { background: #dbeafe; transform: translateY(-2px); }.td-cta-dark-outline { border: 1px solid rgba(255,255,255,0.3); color: #fff; }.td-cta-dark-outline:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
 .td-play { display: inline-flex; height: 1.25rem; width: 1.25rem; align-items: center; justify-content: center; border-radius: 50%; background: #dbeafe; color: #2563eb; font-size: 0.45rem; }
 @media (min-width: 640px) { .td-address-bar { display: block; } }
-@media (max-width: 1023px) { .td-hero-float { width: 9rem; }.td-float-booking { left: 0; }.td-float-revenue { right: 0; }.td-float-customer { left: 8%; }.td-float-payment { right: 8%; } }
-@media (max-width: 639px) { .td-hero-title { font-size: 3.2rem; }.td-hero-stage { min-height: 30rem; }.td-hero-dashboard { left: -2%; top: 8%; width: 104%; }.td-hero-float { display: none; }.td-route-world { opacity: 0.7; transform: scale(0.72); transform-origin: right bottom; }.td-mini-sidebar { display: none; }.td-product-frame-compact .td-mini-sidebar { display: none; }.td-profit-card, .td-route-chip { display: none; }.td-invoice-sheet { padding: 1rem; }.td-invoice-actions span { font-size: 0.55rem; }.td-globe { height: 14rem; width: 14rem; }.td-crm-stack { min-height: 22rem; }.td-airline-wordmark { width: 30%; }.td-final-orbit { height: 26rem; width: 26rem; } }
+@media (max-width: 1023px) { .td-hero-float { width: 9rem; }.td-float-customer { left: 8%; }.td-float-payment { right: 8%; } }
+@media (max-width: 639px) { .td-hero-title { font-size: 3.2rem; line-height: 1.06; }.td-hero-stage { height: 30rem; min-height: 30rem; }.td-hero-dashboard { left: 0; right: 0; top: 8%; width: 104%; max-width: 104%; }.td-hero-float { display: none; }.td-route-world { right: -0.75rem; bottom: 0.5rem; width: 9rem; opacity: 0.7; transform: scale(0.8); transform-origin: right bottom; }.td-mini-sidebar { display: none; }.td-product-frame-compact .td-mini-sidebar { display: none; }.td-profit-card, .td-route-chip { display: none; }.td-invoice-sheet { padding: 1rem; }.td-invoice-actions span { font-size: 0.55rem; }.td-globe { height: 14rem; width: 14rem; }.td-crm-stack { min-height: 22rem; }.td-airline-wordmark { width: 30%; }.td-final-orbit { height: 26rem; width: 26rem; } }
 @media (prefers-reduced-motion: reduce) { .td-hero-dashboard, .td-showcase-dashboard, .td-showcase-booking, .td-invoice-preview, .td-feature-tile, .td-hero-float { animation: none !important; transition: none !important; } }
 
 @layer components {

@@ -80,26 +80,59 @@ function App() {
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const updateMotion = () => setReducedMotion(mediaQuery.matches);
+
+    const updateMotion = () => {
+      const nextReduced = mediaQuery.matches;
+      setReducedMotion(nextReduced);
+
+      if (nextReduced) {
+        setPointer({ x: 0, y: 0 });
+        setScrollY(0);
+        return;
+      }
+
+      setScrollY(window.scrollY);
+    };
+
     const updateScroll = () => setScrollY(window.scrollY);
-    const updatePointer = (event: MouseEvent) => setPointer({ x: (event.clientX / window.innerWidth - 0.5) * 2, y: (event.clientY / window.innerHeight - 0.5) * 2 });
-    updateMotion(); updateScroll();
+    const updatePointer = (event: MouseEvent) => {
+      const x = (event.clientX / window.innerWidth - 0.5) * 2;
+      const y = (event.clientY / window.innerHeight - 0.5) * 2;
+      setPointer({ x, y });
+    };
+
+    updateMotion();
+
+    if (mediaQuery.matches) {
+      return () => mediaQuery.removeEventListener("change", updateMotion);
+    }
+
     mediaQuery.addEventListener("change", updateMotion);
     window.addEventListener("scroll", updateScroll, { passive: true });
     window.addEventListener("mousemove", updatePointer, { passive: true });
-    return () => { mediaQuery.removeEventListener("change", updateMotion); window.removeEventListener("scroll", updateScroll); window.removeEventListener("mousemove", updatePointer); };
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateMotion);
+      window.removeEventListener("scroll", updateScroll);
+      window.removeEventListener("mousemove", updatePointer);
+    };
   }, []);
 
+  const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
   const depth = reducedMotion ? { x: 0, y: 0 } : pointer;
-  const heroProgress = reducedMotion ? 0 : Math.min(scrollY / 700, 1);
-  const layer = (factor: number, rotateX = 0, rotateY = 0, scale = 1): CSSProperties => ({
-    transform: `translate3d(${depth.x * factor}px, ${depth.y * factor - heroProgress * factor * 0.8}px, 0) rotateX(${rotateX - depth.y * 0.7}deg) rotateY(${rotateY + depth.x * 0.9}deg) scale(${scale})`,
-  });
+  const heroProgress = reducedMotion ? 0 : Math.min(Math.max(scrollY / 700, 0), 1);
+  const layer = (factor: number, rotateX = 0, rotateY = 0, scale = 1, rotateZ = 0): CSSProperties => {
+    const boundedX = clamp(depth.x * factor, -12, 12);
+    const boundedY = clamp(depth.y * factor - heroProgress * factor * 0.6, -15, 15);
+    return {
+      transform: `translate3d(${boundedX}px, ${boundedY}px, 0) rotateX(${rotateX - depth.y * 0.7}deg) rotateY(${rotateY + depth.x * 0.9}deg) rotateZ(${rotateZ}deg) scale(${scale})`,
+    };
+  };
 
   return <main className="marketing-page min-h-screen overflow-x-hidden text-slate-950" style={{ "--hero-progress": heroProgress } as CSSProperties}>
     <header className="td-nav"><div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8"><Logo /><nav className="hidden items-center gap-6 text-sm font-semibold text-slate-600 md:flex"><a href="#features">Features</a><a href="#solutions">Solutions</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><Link href="/login" className="ms-3">Login</Link><Link href="/demo" className="td-nav-dark">Try Interactive Demo</Link><Link href="/signup" className="td-nav-primary">Start Free Trial</Link></nav><button type="button" aria-label={mobileOpen ? "Close menu" : "Open menu"} onClick={() => setMobileOpen(!mobileOpen)} className="rounded-md p-2 text-slate-700 md:hidden">{mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button></div>{mobileOpen && <nav className="border-t border-slate-200 bg-white px-5 py-4 md:hidden"><div className="mx-auto flex max-w-7xl flex-col gap-1 text-sm font-semibold"><a href="#features" onClick={() => setMobileOpen(false)} className="px-2 py-3">Features</a><a href="#solutions" onClick={() => setMobileOpen(false)} className="px-2 py-3">Solutions</a><a href="#pricing" onClick={() => setMobileOpen(false)} className="px-2 py-3">Pricing</a><a href="#faq" onClick={() => setMobileOpen(false)} className="px-2 py-3">FAQ</a><Link href="/login" className="px-2 py-3">Login</Link><Link href="/demo" className="mt-2 rounded-md bg-slate-950 px-4 py-3 text-center text-white">Try Interactive Demo</Link><Link href="/signup" className="rounded-md bg-blue-600 px-4 py-3 text-center text-white">Start Free Trial</Link></div></nav>}</header>
 
-    <section className="td-hero"><div className="td-hero-grid" /><div className="td-airport-glow" /><div className="mx-auto grid min-h-[730px] max-w-7xl items-center gap-10 px-5 pb-20 pt-14 sm:px-6 lg:grid-cols-[0.76fr_1.24fr] lg:px-8 lg:pb-24 lg:pt-20"><div className="relative z-20"><p className="td-eyebrow text-blue-700">Travel agency operations, simplified</p><h1 className="td-hero-title">Run your entire<br />travel agency<br />from one <span>powerful</span><br />workspace.</h1><p className="mt-6 max-w-lg text-lg leading-8 text-slate-600">Manage customers, bookings, invoices, agents and daily operations — all from one intelligent platform.</p><div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/signup" className="td-cta-primary">Start Free Trial <ArrowRight className="h-4 w-4" /></Link><Link href="/demo" className="td-cta-secondary">Watch Demo <span className="td-play">▶</span></Link></div><div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[11px] font-medium text-slate-500"><span><Check className="mr-1 inline h-3.5 w-3.5 text-emerald-500" />No credit card required</span><span><Check className="mr-1 inline h-3.5 w-3.5 text-emerald-500" />Setup in minutes</span><span><Check className="mr-1 inline h-3.5 w-3.5 text-emerald-500" />Built for travel agencies</span></div></div><div className="td-hero-stage relative min-h-[540px] lg:min-h-[620px]"><div className="td-route-world" style={layer(5, 0, -4, 0.98)}><GlobeRoutes /></div><div className="td-hero-dashboard" style={layer(9, 5, -8, 0.98)}><DashboardPreview /></div><GlassCard className="td-hero-float td-float-booking" style={layer(16, 2, -4, 0.98)}><p className="td-eyebrow text-blue-700">Booking confirmed</p><p className="mt-2 text-sm font-bold text-slate-900">MCT → JED</p><p className="text-[10px] text-slate-500">Confirmed · +1 passenger</p></GlassCard><GlassCard className="td-hero-float td-float-revenue" style={layer(20, -2, 5, 0.94)}><div className="flex items-center justify-between"><p className="td-eyebrow text-slate-500">Revenue</p><TrendingUp className="h-4 w-4 text-emerald-600" /></div><p className="mt-2 text-lg font-bold text-slate-900">12,480 OMR</p><p className="text-[10px] font-bold text-emerald-600">+18.4%</p></GlassCard><GlassCard className="td-hero-float td-float-payment" style={layer(24, 3, -3, 0.9)}><p className="td-eyebrow text-slate-500">Payment received</p><p className="mt-2 text-lg font-bold text-slate-900">2,450 OMR</p><span className="text-[10px] font-bold text-emerald-600">Paid</span></GlassCard><GlassCard className="td-hero-float td-float-customer" style={layer(18, -3, 4, 0.92)}><p className="td-eyebrow text-orange-600">New customer</p><p className="mt-2 text-lg font-bold text-slate-900">+24</p><p className="text-[10px] text-slate-500">This month</p></GlassCard></div></div></section>
+    <section className="td-hero"><div className="td-hero-grid" /><div className="td-airport-glow" /><div className="mx-auto grid min-h-[730px] max-w-7xl items-center gap-10 px-5 pb-20 pt-14 sm:px-6 lg:grid-cols-[0.76fr_1.24fr] lg:px-8 lg:pb-24 lg:pt-20"><div className="relative z-20"><p className="td-eyebrow text-blue-700">Travel agency operations, simplified</p><h1 className="td-hero-title">Run your entire<br />travel agency<br />from one <span>powerful workspace</span>.</h1><p className="mt-6 max-w-lg text-lg leading-8 text-slate-600">Manage customers, bookings, invoices, agents and daily operations — all from one intelligent platform.</p><div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/signup" className="td-cta-primary">Start Free Trial <ArrowRight className="h-4 w-4" /></Link><Link href="/demo" className="td-cta-secondary">Watch Demo <span className="td-play">▶</span></Link></div><div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[11px] font-medium text-slate-500"><span><Check className="mr-1 inline h-3.5 w-3.5 text-emerald-500" />No credit card required</span><span><Check className="mr-1 inline h-3.5 w-3.5 text-emerald-500" />Setup in minutes</span><span><Check className="mr-1 inline h-3.5 w-3.5 text-emerald-500" />Built for travel agencies</span></div></div><div className="td-hero-stage relative min-h-[540px] lg:min-h-[620px]"><div className="td-route-world" style={layer(5, 0, -4, 0.98)}><GlobeRoutes /></div><div className="td-hero-dashboard" style={layer(9, 15, -15, 0.98, 4)}><DashboardPreview /></div><GlassCard className="td-hero-float td-float-booking" style={layer(16, 2, -4, 0.98)}><p className="td-eyebrow text-blue-700">Booking confirmed</p><p className="mt-2 text-sm font-bold text-slate-900">MCT → JED</p><p className="text-[10px] text-slate-500">Confirmed · +1 passenger</p></GlassCard><GlassCard className="td-hero-float td-float-revenue" style={layer(20, -2, 5, 0.94)}><div className="flex items-center justify-between"><p className="td-eyebrow text-slate-500">Revenue</p><TrendingUp className="h-4 w-4 text-emerald-600" /></div><p className="mt-2 text-lg font-bold text-slate-900">12,480 OMR</p><p className="text-[10px] font-bold text-emerald-600">+18.4%</p></GlassCard><GlassCard className="td-hero-float td-float-payment" style={layer(24, 3, -3, 0.9)}><p className="td-eyebrow text-slate-500">Payment received</p><p className="mt-2 text-lg font-bold text-slate-900">2,450 OMR</p><span className="text-[10px] font-bold text-emerald-600">Paid</span></GlassCard><GlassCard className="td-hero-float td-float-customer" style={layer(18, -3, 4, 0.92)}><p className="td-eyebrow text-orange-600">New customer</p><p className="mt-2 text-lg font-bold text-slate-900">+24</p><p className="text-[10px] text-slate-500">This month</p></GlassCard></div></div></section>
 
     <section id="features" className="td-feature-rail"><div className="mx-auto grid max-w-7xl grid-cols-2 gap-2 px-5 py-3 sm:grid-cols-4 lg:grid-cols-8 lg:px-8">{[[Plane, "Flight bookings"], [Globe2, "Hotel reservations"], [FileText, "Visa management"], [Users, "Customer CRM"], [Receipt, "Invoices & accounting"], [BarChart3, "Reports & analytics"], [CalendarCheck, "Calendar & tasks"], [MessageCircle, "WhatsApp sharing"]].map(([Icon, label]) => { const FeatureIcon = Icon as typeof Plane; return <div key={label as string} className="td-feature-tile"><FeatureIcon className="h-4 w-4 text-blue-600" /><span>{label as string}</span></div>; })}</div></section>
 
